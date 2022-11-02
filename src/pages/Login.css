@@ -1,0 +1,4 @@
+.divider:before {
+    content: '';
+    @apply h-0 bg-transparent border-t w-full absolute left-0 top-1/2 -translate-y-1/2;
+}

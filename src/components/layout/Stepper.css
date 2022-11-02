@@ -1,0 +1,47 @@
+.step {
+    @apply w-full text-gray-600 uppercase tracking-wide font-semibold relative
+}
+
+.roundel {
+    @apply rounded-full w-12 h-12 flex justify-center items-center mx-auto mb-2;
+}
+
+.active {
+    @apply bg-blue-500;
+}
+
+.icon {
+    @apply relative z-[2];
+}
+
+.step-two {
+    @apply text-center;
+}
+
+.step-three {
+    @apply text-right;
+}
+
+.step-one:after, 
+.step-two:before,
+.step-two:after,
+.step-three:before {
+    content: '';
+    @apply absolute h-[1px] bg-gray-200 block top-[24px]
+}
+
+.step-one:after {
+    @apply right-0 w-4/5;
+}
+
+.step-two:before {
+    @apply w-1/2 left-0;
+}
+
+.step-two:after {
+    @apply w-1/2 right-0;
+}
+
+.step-three:before {
+    @apply w-4/5 left-0;
+}
