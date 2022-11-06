@@ -1,3 +1,4 @@
-[type=text], [type=number] {
-    @apply appearance-none border border-gray-300 px-2 py-3 mt-0;
+[type='text'],
+[type='number'] {
+    @apply mt-0 appearance-none border border-gray-300 px-2 py-3;
 }

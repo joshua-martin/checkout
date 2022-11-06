@@ -1,21 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
 
-import './index.css';
-import App from './App';
+import './index.css'
+import App from './App'
 
 import { store } from './app/store'
 import { Provider } from 'react-redux'
 
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 
-const root = ReactDOM.createRoot(document.querySelector('.checkout-app'));
+const root = ReactDOM.createRoot(document.querySelector('.checkout-app'))
 
 const client = new ApolloClient({
     uri: 'http://localhost:4000/',
-    cache: new InMemoryCache(),
-});
+    cache: new InMemoryCache()
+})
 
 root.render(
     <ApolloProvider client={client}>
@@ -25,4 +25,4 @@ root.render(
             </BrowserRouter>
         </Provider>
     </ApolloProvider>
-);
+)

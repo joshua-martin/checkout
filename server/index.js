@@ -1,5 +1,4 @@
-const { ApolloServer, gql } = require('apollo-server');
-
+const { ApolloServer, gql } = require('apollo-server')
 
 const typeDefs = gql`
     type DeliveryOption {
@@ -21,7 +20,7 @@ const typeDefs = gql`
     type Query {
         items: [Item]
     }
-`;
+`
 
 const items = [
     {
@@ -81,16 +80,16 @@ const items = [
             }
         ]
     }
-];
+]
 
 const resolvers = {
     Query: {
-        items: () => items,
-    },
-};
+        items: () => items
+    }
+}
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ typeDefs, resolvers })
 
 server.listen().then(({ url }) => {
-    console.log(`🚀  Server ready at ${url}`);
-});
+    console.log(`🚀  Server ready at ${url}`)
+})

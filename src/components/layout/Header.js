@@ -1,9 +1,9 @@
-import { ReactComponent as Logo } from './Logo.svg';
+import { ReactComponent as Logo } from './Logo.svg'
 
 const Header = () => {
     return (
-        <header className='p-4 shadow-lg'>
-            <div className='flex flex-row justify-between items-center'>
+        <header className="p-4 shadow-lg">
+            <div className="flex flex-row items-center justify-between">
                 <Logo />
             </div>
         </header>
@@ -11,4 +11,3 @@ const Header = () => {
 }
 
 export default Header
-

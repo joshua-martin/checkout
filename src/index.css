@@ -2,10 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
+html,
+body {
     @apply min-h-screen;
 }
 
 .checkout-app {
-    @apply flex flex-col min-h-screen;
+    @apply flex min-h-screen flex-col;
 }

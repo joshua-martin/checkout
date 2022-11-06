@@ -25,7 +25,10 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix",
+        "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}'"
     },
     "eslintConfig": {
         "extends": [
@@ -48,7 +51,13 @@
     "devDependencies": {
         "@tailwindcss/typography": "^0.5.7",
         "autoprefixer": "^10.4.13",
+        "eslint": "^8.27.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "eslint-plugin-react": "^7.31.10",
         "postcss": "^8.4.18",
+        "prettier": "^2.7.1",
+        "prettier-plugin-tailwindcss": "^0.1.13",
         "tailwindcss": "^3.2.1"
     }
 }

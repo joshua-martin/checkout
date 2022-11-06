@@ -1,10 +1,13 @@
 function Error({ err }) {
     return (
-        <div className='container max-w-5xl mx-auto flex flex-row my-8 space-x-6'>
-            <div className='rounded-lg shadow-lg p-6 w-full flex-shrink-0'>
-                <div className='prose'>
+        <div className="container mx-auto my-8 flex max-w-5xl flex-row space-x-6">
+            <div className="w-full flex-shrink-0 rounded-lg p-6 shadow-lg">
+                <div className="prose">
                     <h1>Error</h1>
-                    <p>Sorry, there's been an error. Please take note of the error message(s) below.</p>
+                    <p>
+                        Sorry, there's been an error. Please take note of the error message(s)
+                        below.
+                    </p>
                     <ul>
                         {err.graphQLErrors.map(({ message }, i) => (
                             <li key={i}>{message}</li>
@@ -17,4 +20,3 @@ function Error({ err }) {
 }
 
 export default Error
-

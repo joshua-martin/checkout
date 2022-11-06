@@ -1,53 +1,72 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import './Stepper.css';
+import './Stepper.css'
 
 import { useSelector } from 'react-redux'
-import { selectStep } from '../../reducers/stepperSlice';
+import { selectStep } from '../../reducers/stepperSlice'
 
 const Stepper = () => {
     const step = useSelector(selectStep)
 
     return (
-        <div className='flex justify-center mx-auto mt-12 px-4 max-w-2xl relative w-full'>
-            <div className='step step-one'>
-                <div className='inline-block icon'>
+        <div className="relative mx-auto mt-12 flex w-full max-w-2xl justify-center px-4">
+            <div className="step step-one">
+                <div className="icon inline-block">
                     <div className={`roundel ${step === 0 || step > 0 ? 'active' : ''}`}>
                         {(() => {
                             if (step > 0)
-                                return <FontAwesomeIcon icon={solid('check')} className='text-white text-xl rounded-full' />
+                                return (
+                                    <FontAwesomeIcon
+                                        icon={solid('check')}
+                                        className="rounded-full text-xl text-white"
+                                    />
+                                )
                             else
-                                return <span className='bg-white w-4 h-4 rounded-full shadow-md'></span>
+                                return (
+                                    <span className="h-4 w-4 rounded-full bg-white shadow-md"></span>
+                                )
                         })()}
                     </div>
                     <span>Your Details</span>
                 </div>
             </div>
-            <div className='step step-two'>
-                <div className='inline-block icon'>
+            <div className="step step-two">
+                <div className="icon inline-block">
                     <div className={`roundel ${step === 1 || step > 1 ? 'active' : ''}`}>
                         {(() => {
                             if (step > 1)
-                                return <FontAwesomeIcon icon={solid('check')} className='text-white text-xl rounded-full' />
+                                return (
+                                    <FontAwesomeIcon
+                                        icon={solid('check')}
+                                        className="rounded-full text-xl text-white"
+                                    />
+                                )
                             else if (step === 1)
-                                return <span className='bg-white w-4 h-4 rounded-full shadow-md'></span>
-                            else
-                                return <span className='bg-gray-600 w-4 h-4 rounded-full'></span>
+                                return (
+                                    <span className="h-4 w-4 rounded-full bg-white shadow-md"></span>
+                                )
+                            else return <span className="h-4 w-4 rounded-full bg-gray-600"></span>
                         })()}
                     </div>
                     <span>Select Delivery</span>
                 </div>
             </div>
-            <div className='step step-three'>
-                <div className='inline-block icon'>
+            <div className="step step-three">
+                <div className="icon inline-block">
                     <div className={`roundel ${step >= 2 && 'active'}`}>
                         {(() => {
                             if (step > 2)
-                                return <FontAwesomeIcon icon={solid('check')} className='text-white text-xl rounded-full' />
+                                return (
+                                    <FontAwesomeIcon
+                                        icon={solid('check')}
+                                        className="rounded-full text-xl text-white"
+                                    />
+                                )
                             else if (step === 2)
-                                return <span className='bg-white w-4 h-4 rounded-full shadow-md'></span>
-                            else
-                                return <span className='bg-gray-600 w-4 h-4 rounded-full'></span>
+                                return (
+                                    <span className="h-4 w-4 rounded-full bg-white shadow-md"></span>
+                                )
+                            else return <span className="h-4 w-4 rounded-full bg-gray-600"></span>
                         })()}
                     </div>
                     <span>Payment</span>

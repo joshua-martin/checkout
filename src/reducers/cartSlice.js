@@ -12,7 +12,7 @@ export const cartSlice = createSlice({
     },
     reducers: {
         toggleQuantity: (state, actions) => {
-            const cartItem = state.items.find(i => i.id === actions.payload.item.id);
+            const cartItem = state.items.find((i) => i.id === actions.payload.item.id)
             const quantity = actions.payload.quantity
 
             if (quantity < 1) {
@@ -23,16 +23,16 @@ export const cartSlice = createSlice({
             cartSlice.caseReducers.updateTotals(state)
         },
         addItem: (state, actions) => {
-            const quantity = actions.payload.quantity;
-            const item = actions.payload.item;
-            const cartItem = state.items.find(i => i.id === item.id);
+            const quantity = actions.payload.quantity
+            const item = actions.payload.item
+            const cartItem = state.items.find((i) => i.id === item.id)
 
             if (cartItem) {
                 if (quantity === 0) {
                     cartSlice.caseReducers.removeItem(state, actions)
                 }
 
-                cartItem.quantity += quantity;
+                cartItem.quantity += quantity
             } else {
                 const combinedItem = {
                     ...item,
@@ -45,36 +45,39 @@ export const cartSlice = createSlice({
             cartSlice.caseReducers.updateTotals(state)
         },
         removeItem: (state, actions) => {
-            const item = actions.payload.item;
-            state.items = state.items.filter(i => i.id !== item.id)
+            const item = actions.payload.item
+            state.items = state.items.filter((i) => i.id !== item.id)
 
             cartSlice.caseReducers.updateTotals(state)
         },
-        toggleDiscountCode: (state, actions) => {
-        },
+        toggleDiscountCode: (state, actions) => {},
         toggleDelivery: (state, actions) => {
-            const cartItem = state.items.find(i => i.id === actions.payload.item);
+            const cartItem = state.items.find((i) => i.id === actions.payload.item)
 
-            cartItem.delivery.filter(d => d.id === actions.payload.deliveryOption.id ? d.default = true : d.default = false)
+            cartItem.delivery.filter((d) =>
+                d.id === actions.payload.deliveryOption.id
+                    ? (d.default = true)
+                    : (d.default = false)
+            )
             cartSlice.caseReducers.updateTotals(state)
         },
         updateTotals: (state) => {
-            let total = 0;
-            let subtotal = 0;
-            let delivery = 0;
-            let totalItems = 0;
+            let total = 0
+            let subtotal = 0
+            let delivery = 0
+            let totalItems = 0
 
-            state.items.map(i => {
-                totalItems += i.quantity;
-                subtotal += i.price * i.quantity;
-                const activeDeliveryItem = i.delivery.filter(d => d.default === true)[0]
+            state.items.map((i) => {
+                totalItems += i.quantity
+                subtotal += i.price * i.quantity
+                const activeDeliveryItem = i.delivery.filter((d) => d.default === true)[0]
 
                 if (activeDeliveryItem.price > 0) {
                     delivery += activeDeliveryItem.price * i.quantity
                 }
-                return true;
-            });
-            total = subtotal + delivery;
+                return true
+            })
+            total = subtotal + delivery
 
             state.total = total
             state.subtotal = subtotal
@@ -84,8 +87,9 @@ export const cartSlice = createSlice({
     }
 })
 
-export const { toggleQuantity, addItem, removeItem, toggleDiscountCode, toggleDelivery } = cartSlice.actions
+export const { toggleQuantity, addItem, removeItem, toggleDiscountCode, toggleDelivery } =
+    cartSlice.actions
 
-export const selectCart = state => state.cart
+export const selectCart = (state) => state.cart
 
 export default cartSlice.reducer
