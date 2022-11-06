@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import RegisterForm from '../components/checkout/RegisterForm'
+import RegisterForm from '../components/register/RegisterForm'
 
 function Register() {
 

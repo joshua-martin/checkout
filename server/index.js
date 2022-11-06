@@ -5,14 +5,15 @@ const typeDefs = gql`
     type DeliveryOption {
         id: Int
         title: String
-        price: Float
+        price: Int
+        default: Boolean
     }
 
     type Item {
         id: Int
         title: String
         seller: String
-        price: Float
+        price: Int
         image: String
         delivery: [DeliveryOption]
     }
@@ -27,37 +28,41 @@ const items = [
         id: 1,
         title: 'Fancy Slippers',
         seller: 'Slipper4U',
-        price: 12.50,
+        price: 1250,
         image: 'https://picsum.photos/300/300',
         delivery: [
             {
                 id: 1,
                 title: 'Free',
-                price: 0.00
+                price: 0,
+                default: true
             },
             {
                 id: 2,
                 title: 'Priority',
-                price: 10.00
+                price: 1000,
+                default: false
             }
         ]
     },
     {
         id: 2,
         title: 'Nice Slippers',
-        seller: 'Slipper4U',
-        price: 8.50,
+        seller: 'Fancy Slipper Shop',
+        price: 850,
         image: 'https://picsum.photos/300/300',
         delivery: [
             {
-                id: 1,
+                id: 3,
                 title: 'Free',
-                price: 0.00
+                price: 0,
+                default: false
             },
             {
-                id: 2,
+                id: 4,
                 title: 'Priority',
-                price: 10.00
+                price: 1000,
+                default: true
             }
         ]
     },
@@ -65,13 +70,14 @@ const items = [
         id: 3,
         title: 'Sporty Trainers',
         seller: 'Trainer Life',
-        price: 28.50,
+        price: 2850,
         image: 'https://picsum.photos/300/300',
         delivery: [
             {
                 id: 1,
                 title: 'Free',
-                price: 0.00
+                price: 0,
+                default: true
             }
         ]
     }

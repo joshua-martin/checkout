@@ -1,59 +1,82 @@
 import { useNavigate } from 'react-router-dom';
+import Button from '../ui/Button';
+import { useSelector } from 'react-redux'
+import { selectCart } from '../../reducers/cartSlice';
 
-import { useDispatch } from 'react-redux'
-import { increment } from '../../reducers/stepperSlice';
+function Sidebar({ showEditButton, showButton, buttonTitle, onClick }) {
 
-function Sidebar({ payment = false }) {
-
-    const dispatch = useDispatch()
+    const cart = useSelector(selectCart)
     const navigate = useNavigate();
 
-    const handleDeliveryStep = () => {
-        dispatch(increment());
-        navigate('/payment');
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'GBP'
+    });
+
+    const handleEditStep = () => {
+        navigate('/');
     }
 
     return (
-        <div className='p-4 shadow-lg rounded-lg w-full'>
-            <div className="content">
+        <div className='p-6 shadow-lg rounded-lg w-full'>
+            <div className="content prose prose-sm">
                 <div className="flex flex-row justify-between">
-                    <span className='uppercase tracking-wide text-gray-600'>
+                    <span className='uppercase tracking-wide text-gray-600 font-bold'>
                         Your Basket
                     </span>
-                    <span className={`text-blue-500 ${payment && "hidden"}`}>
-                        <a> Edit Basket</a>
+                    <span className={`text-blue-500 ${!showEditButton && "hidden"}`}>
+                        <button onClick={handleEditStep}>Edit Basket</button>
                     </span>
                 </div>
 
-                <div className='flex flex-row justify-between'>
-                    <span>Subtotal (1 Item)</span>
-                    <span className='font-semibold'>
-                        £17.32
-                    </span>
-                </div>
+                {(() => {
+                    if (cart.totalItems === 0) {
+                        return (
+                            <p className='mt-1 text-sm'>You do not have any items in your cart</p>
+                        )
+                    } else {
+                        return (
+                            <>
+                                <p className='flex flex-row justify-between my-1'>
+                                    <span>Subtotal ({cart.totalItems} Item{cart.totalItems > 1 && 's'})</span>
+                                    <span className='font-semibold'>
+                                        {formatter.format(cart.subtotal / 100)}
+                                    </span>
+                                </p>
 
-                <div className='flex flex-row justify-between'>
-                    <span>Delivery</span>
-                    <span className='font-semibold'>
-                        Free
-                    </span>
-                </div>
+                                <p className='flex flex-row justify-between my-1'>
+                                    <span>Delivery</span>
+                                    <span className='font-semibold'>
+                                        {cart.delivery === 0 ? 'Free' : formatter.format(cart.delivery / 100)}
+                                    </span>
+                                </p>
 
-                <div className='flex flex-row justify-between text-green-500'>
-                    <span>Discount Applied</span>
-                    <span className='font-semibold'>
-                        £10.00
-                    </span>
-                </div>
+                                {cart.discount.total && (
+                                    <p className='flex flex-row justify-between text-green-500 my-1'>
+                                        <span>Discount Applied</span>
+                                        <span className='font-semibold'>
+                                            {formatter.format(cart.discount.total)}
+                                        </span>
+                                    </p>
+                                )}
 
-                <div className='flex flex-row justify-between text-xl font-semibold'>
-                    <span>Total</span>
-                    <span>
-                        £7.32
-                    </span>
-                </div>
+                                <p className='flex flex-row justify-between text-xl font-semibold my-1'>
+                                    <span>Total</span>
+                                    <span>
+                                        {formatter.format(cart.total / 100)}
+                                    </span>
+                                </p>
 
-                <button type='submit' onClick={handleDeliveryStep} className={`rounded-lg shadow-sm border border-green-500 text-white bg-green-500 w-full py-4 mt-4 font-bold tracking-wide transition-colors hover:bg-green-700 ${payment && "hidden"}`}>Continue to Payment</button>
+                                <Button
+                                    onClick={onClick}
+                                    classOverrides={`mt-2 py-4 ${showButton && 'hidden'}`}
+                                    title={buttonTitle} />
+                            </>
+                        )
+                    }
+                })()}
+
+
             </div>
         </div>
     )
