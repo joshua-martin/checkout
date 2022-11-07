@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/layout/Sidebar'
 import { increment } from '../reducers/stepperSlice'
 
@@ -11,8 +11,8 @@ function Payment() {
     const dispatch = useDispatch()
     const user = useSelector(selectUser)
 
-    if (user === '') {
-        return <Navigate to="/" replace />
+    if (!user.loggedIn) {
+        navigate('/')
     }
 
     const handlePaymentStep = () => {
@@ -35,8 +35,7 @@ function Payment() {
                 <button
                     type="submit"
                     onClick={handlePaymentStep}
-                    className="mt-4 w-full rounded-lg border border-green-500 bg-green-500 py-4 font-bold tracking-wide text-white shadow-sm transition-colors hover:bg-green-700"
-                >
+                    className="mt-4 w-full rounded-lg border border-green-500 bg-green-500 py-4 font-bold tracking-wide text-white shadow-sm transition-colors hover:bg-green-700">
                     Mock Payment
                 </button>
             </div>

@@ -8,7 +8,7 @@ function BasketItems() {
     if (cart.totalItems === 0) {
         return (
             <p className="mt-2 mb-6">
-                You don't have any items in your cart. You can add some below
+                You don&apos;t have any items in your cart. You can add some below
             </p>
         )
     } else {

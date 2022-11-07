@@ -17,8 +17,7 @@ function DeliveryBlock({ item, delivery }) {
         <label
             htmlFor={'option_' + delivery.id}
             className="mb-2 flex cursor-pointer space-x-2 rounded-lg border border-blue-500 p-4 hover:border-blue-900"
-            key={'delivery_' + delivery.id}
-        >
+            key={'delivery_' + delivery.id}>
             <input
                 type="radio"
                 id={'option_' + delivery.id}

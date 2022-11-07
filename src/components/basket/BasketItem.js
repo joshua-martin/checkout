@@ -40,7 +40,7 @@ function BasketItem({ item }) {
 
             <div className="flex flex-row">
                 <div className="w-full">
-                    <div className="mt-2 grid grid-cols-2 gap-4">
+                    <div className="mt-2 grid gap-4 lg:grid-cols-2">
                         <div className="flex">
                             <img src={item.image} alt="" width="80" height="80" className="m-0" />
 
@@ -52,8 +52,7 @@ function BasketItem({ item }) {
                                         <div className="relative mt-1 flex h-10 w-full flex-row rounded-lg bg-transparent">
                                             <button
                                                 onClick={decrementQuantity}
-                                                className=" h-full w-20 cursor-pointer rounded-l bg-gray-300 text-gray-600 outline-none hover:bg-gray-400 hover:text-gray-700"
-                                            >
+                                                className=" h-full w-20 cursor-pointer rounded-l bg-gray-300 text-gray-600 outline-none hover:bg-gray-400 hover:text-gray-700">
                                                 <span className="m-auto text-2xl font-thin">−</span>
                                             </button>
                                             <input
@@ -66,8 +65,7 @@ function BasketItem({ item }) {
                                             />
                                             <button
                                                 onClick={incrementQuantity}
-                                                className="h-full w-20 cursor-pointer rounded-r bg-gray-300 text-gray-600 hover:bg-gray-400 hover:text-gray-700"
-                                            >
+                                                className="h-full w-20 cursor-pointer rounded-r bg-gray-300 text-gray-600 hover:bg-gray-400 hover:text-gray-700">
                                                 <span className="m-auto text-2xl font-thin">+</span>
                                             </button>
                                         </div>

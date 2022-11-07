@@ -50,7 +50,23 @@ export const cartSlice = createSlice({
 
             cartSlice.caseReducers.updateTotals(state)
         },
-        toggleDiscountCode: (state, actions) => {},
+        toggleDiscountCode: (state, actions) => {
+            const discount = actions.payload
+
+            if (!discount) {
+                state.discount = {}
+            } else {
+                const discountType = discount.type
+                let discountAmount =
+                    discountType === 'percentage'
+                        ? state.total * (1 - (1 - discount.discount / 100))
+                        : discount.discount
+                state.discount.amount = discountAmount
+                state.discount.code = discount.code
+            }
+
+            cartSlice.caseReducers.updateTotals(state)
+        },
         toggleDelivery: (state, actions) => {
             const cartItem = state.items.find((i) => i.id === actions.payload.item)
 
@@ -66,6 +82,7 @@ export const cartSlice = createSlice({
             let subtotal = 0
             let delivery = 0
             let totalItems = 0
+            let discount = state.discount.amount ?? 0
 
             state.items.map((i) => {
                 totalItems += i.quantity
@@ -77,7 +94,7 @@ export const cartSlice = createSlice({
                 }
                 return true
             })
-            total = subtotal + delivery
+            total = subtotal - discount + delivery
 
             state.total = total
             state.subtotal = subtotal

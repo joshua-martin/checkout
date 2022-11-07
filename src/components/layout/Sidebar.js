@@ -55,11 +55,11 @@ function Sidebar({ showEditButton, showButton, buttonTitle, onClick }) {
                                     </span>
                                 </p>
 
-                                {cart.discount.total && (
+                                {cart.discount.code && (
                                     <p className="my-1 flex flex-row justify-between text-green-500">
                                         <span>Discount Applied</span>
                                         <span className="font-semibold">
-                                            {formatter.format(cart.discount.total)}
+                                            {formatter.format(cart.discount.amount / 100)}
                                         </span>
                                     </p>
                                 )}

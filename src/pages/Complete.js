@@ -1,12 +1,13 @@
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../reducers/userSlice'
 
 function Payment() {
     const user = useSelector(selectUser)
+    const navigate = useNavigate()
 
-    if (user === '') {
-        return <Navigate to="/" replace />
+    if (!user.loggedIn) {
+        navigate('/')
     }
 
     return <div>Complete</div>

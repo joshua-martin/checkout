@@ -5,7 +5,7 @@ function Error({ err }) {
                 <div className="prose">
                     <h1>Error</h1>
                     <p>
-                        Sorry, there's been an error. Please take note of the error message(s)
+                        Sorry, there&apos;s been an error. Please take note of the error message(s)
                         below.
                     </p>
                     <ul>

@@ -28,21 +28,24 @@ function Basket() {
     const navigate = useNavigate()
 
     if (loading) return null
-    if (error) return <Error err={error} />
+    if (error) {
+        console.log(error)
+        return <Error err={error} />
+    }
 
     const handleBasketStep = () => {
         navigate('/login')
     }
 
     return (
-        <div className="container mx-auto my-8 flex max-w-5xl flex-row items-start space-x-6">
-            <div className="prose-sm w-2/3 flex-shrink-0 rounded-lg p-6 shadow-lg">
+        <div className="container mx-auto my-8 flex max-w-5xl flex-row flex-wrap items-start lg:space-x-6">
+            <div className="prose-sm mb-4 w-full flex-shrink-0 rounded-lg p-6 shadow-lg lg:mb-0 lg:w-2/3">
                 <h1>Basket</h1>
 
                 <BasketItems />
 
                 <hr className="my-4" />
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid gap-y-2 lg:grid-cols-3 lg:gap-x-2">
                     {data.items.map((item) =>
                         (() => {
                             return <PurchaseElement item={item} key={item.id} />

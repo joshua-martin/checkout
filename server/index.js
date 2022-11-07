@@ -2,14 +2,21 @@ const { ApolloServer, gql } = require('apollo-server')
 
 const typeDefs = gql`
     type DeliveryOption {
-        id: Int
+        id: ID!
         title: String
         price: Int
         default: Boolean
     }
 
+    type DiscountCode {
+        id: ID!
+        code: String
+        discount: Int
+        type: String
+    }
+
     type Item {
-        id: Int
+        id: ID!
         title: String
         seller: String
         price: Int
@@ -17,8 +24,40 @@ const typeDefs = gql`
         delivery: [DeliveryOption]
     }
 
+    type User {
+        id: ID!
+        email: String!
+        password: String!
+        name: String
+        phone: String
+        addressLine: String
+        town: String
+        postcode: String
+        token: String
+    }
+
+    type UserLoginResponse {
+        success: Boolean!
+        message: String
+        user: [User]
+    }
+
+    type Mutation {
+        login(email: String!): UserLoginResponse!
+        register(
+            email: String!
+            name: String
+            phone: String
+            addressLine: String
+            town: String
+            postcode: String
+        ): UserLoginResponse!
+    }
+
     type Query {
         items: [Item]
+        discountCodes: [DiscountCode]
+        discountCode(code: String!): DiscountCode
     }
 `
 
@@ -82,9 +121,93 @@ const items = [
     }
 ]
 
+const user = [
+    {
+        id: 1,
+        email: 'testbuyer@email.com',
+        name: 'Test Buyer',
+        phone: '07000100000',
+        addressLine: 'Houses of Commons',
+        town: 'London',
+        postcode: 'SW1A 1AA'
+    },
+    {
+        id: 2,
+        email: 'anotherbuyer@email.com',
+        name: 'Another Buyer',
+        phone: '08000100000',
+        addressLine: 'Parliament',
+        town: 'Westminster',
+        postcode: 'SW1A 1AA'
+    }
+]
+
+const discountCodes = [
+    {
+        id: 1,
+        code: 'TENPOFF',
+        discount: 10,
+        type: 'percentage'
+    },
+    {
+        id: 2,
+        code: 'TENOFF',
+        discount: 1000,
+        type: 'amount'
+    }
+]
+
 const resolvers = {
     Query: {
-        items: () => items
+        items: () => items,
+        discountCodes: () => discountCodes,
+        discountCode: async (_, { code }) => discountCodes.find((c) => c.code == code)
+    },
+    Mutation: {
+        login: async (_, { email }) => {
+            const authUser = user.find((u) => u.email == email)
+
+            if (!authUser) {
+                return {
+                    success: false,
+                    message: 'Your password or email is invalid'
+                }
+            }
+
+            if (authUser) {
+                return {
+                    success: true,
+                    message: 'Logged in successfully',
+                    user: [authUser]
+                }
+            }
+        },
+        register: async (_, { email, name, phone, addressLine, town, postcode }) => {
+            const authUser = user.find((u) => u.email == email)
+
+            if (authUser) {
+                return {
+                    success: false,
+                    message: 'A user already exists with this email'
+                }
+            }
+
+            return {
+                success: true,
+                message: 'Account created successfully',
+                user: [
+                    {
+                        id: 3,
+                        email,
+                        name,
+                        phone,
+                        addressLine,
+                        town,
+                        postcode
+                    }
+                ]
+            }
+        }
     }
 }
 

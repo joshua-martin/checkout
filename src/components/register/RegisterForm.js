@@ -1,189 +1,224 @@
 import React, { useState } from 'react'
-import { Navigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { increment } from '../../reducers/stepperSlice'
 import { login } from '../../reducers/userSlice'
+import Input from '../ui/Input'
+import Button from '../ui/Button'
+import { gql, useMutation } from '@apollo/client'
+
+const REGISTER_USER = gql`
+    mutation Register(
+        $email: String!
+        $name: String
+        $phone: String
+        $addressLine: String
+        $town: String
+        $postcode: String
+    ) {
+        register(
+            email: $email
+            name: $name
+            phone: $phone
+            addressLine: $addressLine
+            town: $town
+            postcode: $postcode
+        ) {
+            success
+            message
+            user {
+                id
+                email
+                name
+                phone
+                addressLine
+                town
+                postcode
+            }
+        }
+    }
+`
 
 function RegisterForm() {
     const dispatch = useDispatch()
+    const [registerUser, { loading, error }] = useMutation(REGISTER_USER)
 
     const [email, setEmail] = useState('')
     const [emailError, setEmailError] = useState('')
     const [name, setName] = useState('')
     const [nameError, setNameError] = useState('')
-    const [phoneNumber, setPhoneNumber] = useState('')
-    const [phoneNumberError, setPhoneNumberError] = useState('')
-    const [addressOne, setAddressOne] = useState('')
-    const [addressOneError, setAddressOneError] = useState('')
+    const [phone, setPhone] = useState('')
+    const [phoneError, setPhoneError] = useState('')
+    const [addressLine, setAddressLine] = useState('')
+    const [addressLineError, setAddressLineError] = useState('')
     const [town, setTown] = useState('')
     const [townError, setTownError] = useState('')
     const [postcode, setPostcode] = useState('')
     const [postcodeError, setPostcodeError] = useState('')
 
     const [fetching, setFetching] = useState(false)
-    const [isLogged, setIsLogged] = useState(false)
-    const [showError, setShowError] = useState(false)
+    const [globalError, setGlobalError] = useState(false)
 
     const handleEmail = (e) => {
         const { value } = e.target
-        if (value === '') return setEmailError('Add email')
         setEmail(value)
+        if (value === '') return setEmailError('Add email')
     }
 
     const handleName = (e) => {
         const { value } = e.target
-        if (value === '') return setNameError('Add name')
         setName(value)
+        if (value === '') return setNameError('Add name')
     }
 
-    const handlePhoneNumber = (e) => {
+    const handlePhone = (e) => {
         const { value } = e.target
-        if (value === '') return setPhoneNumberError('Add number')
-        setPhoneNumber(value)
+        setPhone(value)
+        if (value === '') return setPhoneError('Add number')
     }
 
-    const handleAddressOne = (e) => {
+    const handleAddressLine = (e) => {
         const { value } = e.target
-        if (value === '') return setAddressOneError('Add address line')
-        setAddressOne(value)
+        setAddressLine(value)
+        if (value === '') return setAddressLineError('Add address line')
     }
 
     const handleTown = (e) => {
         const { value } = e.target
-        if (value === '') return setTownError('Add town')
         setTown(value)
+        if (value === '') return setTownError('Add town')
     }
 
     const handlePostcode = (e) => {
         const { value } = e.target
-        if (value === '') return setPostcodeError('Add postcode')
         setPostcode(value)
+        if (value === '') return setPostcodeError('Add postcode')
     }
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault()
-        if (
-            emailError ||
-            nameError ||
-            phoneNumberError ||
-            addressOneError ||
-            townError ||
-            postcodeError
-        )
+        if (emailError || nameError || phoneError || addressLineError || townError || postcodeError)
             return
+
         if (!email) setEmailError('Add email')
         if (!name) setNameError('Add name')
-        if (!phoneNumber) setPhoneNumberError('Add number')
-        if (!addressOne) setAddressOneError('Add address line')
+        if (!phone) setPhoneError('Add number')
+        if (!addressLine) setAddressLineError('Add address line')
         if (!town) setTownError('Add town')
         if (!postcode) setPostcodeError('Add postcode')
         else {
             setFetching(true)
-            fetch('http://www.mocky.io/v2/5d9d9219310000153650e30b', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, name, phoneNumber, addressOne, town, postcode })
+            await registerUser({
+                variables: { email, name, phone, addressLine, town, postcode }
             })
                 .then((res) => {
-                    if (res.status >= 200 && res.status <= 300) return res.json()
-                    else throw new Error('Request Failed ', res.status)
+                    if (!res) throw new Error('Request Failed ', res.status)
+
+                    return res.data.register
                 })
                 .then((data) => {
-                    setFetching(false)
-                    dispatch(login('email'))
-                    setIsLogged(true)
-                    dispatch(increment())
+                    if (!data.success) {
+                        setGlobalError(data.message)
+                    } else {
+                        dispatch(login(data.user))
+                        dispatch(increment())
+                    }
                 })
                 .catch((error) => {
                     setFetching(false)
-                    setShowError(true)
-                    console.error(error)
+                    setGlobalError(error.message)
                 })
         }
     }
 
-    if (isLogged) return <Navigate to="/delivery" replace />
+    if (loading) {
+        return (
+            <div className="mb-2 rounded-lg border-2 border-blue-400 px-4 py-2 font-bold text-blue-400">
+                Please wait...
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <div className="mb-2 rounded-lg border-2 border-red-400 px-4 py-2 font-bold text-red-400">
+                {error.message}
+            </div>
+        )
+    }
 
     return (
         <form className="my-4" onSubmit={handleRegister}>
-            {showError && <p className="text-red-400">Please correct the below errors</p>}
-            <label className="mb-2 block">
-                <span className="font-semibold">Email Address</span>
-                <input
-                    type="text"
-                    name="email"
-                    value={email}
-                    onChange={handleEmail}
-                    className="border-grey-600 mt-1 w-full rounded-md border p-2"
-                />
-                {emailError && <p className="text-red-400">{emailError}</p>}
-            </label>
-            <label className="mb-2 block">
-                <span className="font-semibold">Name</span>
-                <input
-                    type="text"
-                    name="name"
-                    value={name}
-                    onChange={handleName}
-                    className="border-grey-600 mt-1 w-full rounded-md border p-2"
-                />
-                {nameError && <p className="text-red-400">{nameError}</p>}
-            </label>
-            <label className="mb-2 block">
-                <span className="font-semibold">Phone Number</span>
-                <input
-                    type="text"
-                    name="phoneNumber"
-                    value={phoneNumber}
-                    onChange={handlePhoneNumber}
-                    className="border-grey-600 mt-1 w-full rounded-md border p-2"
-                />
-                {phoneNumberError && <p className="text-red-400">{phoneNumberError}</p>}
-            </label>
-            <label className="mb-2 block">
-                <span className="font-semibold">Address Line 1</span>
-                <input
-                    type="text"
-                    name="addressOne"
-                    value={addressOne}
-                    onChange={handleAddressOne}
-                    className="border-grey-600 mt-1 w-full rounded-md border p-2"
-                />
-                {addressOneError && <p className="text-red-400">{addressOneError}</p>}
-            </label>
-            <label className="mb-2 block">
-                <span className="font-semibold">Town</span>
-                <input
-                    type="text"
-                    name="town"
-                    value={town}
-                    onChange={handleTown}
-                    className="border-grey-600 mt-1 w-full rounded-md border p-2"
-                />
-                {townError && <p className="text-red-400">{townError}</p>}
-            </label>
-            <label className="mb-2 block">
-                <span className="font-semibold">Postcode</span>
-                <input
-                    type="text"
-                    name="email"
-                    value={postcode}
-                    onChange={handlePostcode}
-                    className="border-grey-600 mt-1 w-full rounded-md border p-2"
-                />
-                {postcodeError && <p className="text-red-400">{postcodeError}</p>}
-            </label>
+            {globalError != '' && (
+                <div className="mb-2 rounded-lg border-2 border-red-400 px-4 py-2 font-bold text-red-400">
+                    {globalError}
+                </div>
+            )}
 
-            <button
-                type="submit"
-                disabled={fetching}
+            <Input
+                type="text"
+                name="email"
+                label="Email Address"
+                onChange={handleEmail}
+                value={email}
+                error={emailError}
+                classOverrides="w-full"
+            />
+
+            <Input
+                type="text"
+                name="name"
+                label="Name"
+                onChange={handleName}
+                value={name}
+                error={nameError}
+                classOverrides="w-full"
+            />
+
+            <Input
+                type="text"
+                name="phoneNumber"
+                label="Phone Number"
+                onChange={handlePhone}
+                value={phone}
+                error={phoneError}
+                classOverrides="w-full"
+            />
+
+            <Input
+                type="text"
+                name="addressOne"
+                label="Address Line 1"
+                onChange={handleAddressLine}
+                value={addressLine}
+                error={addressLineError}
+                classOverrides="w-full"
+            />
+
+            <Input
+                type="text"
+                name="town"
+                label="Town"
+                onChange={handleTown}
+                value={town}
+                error={townError}
+                classOverrides="w-full"
+            />
+            <Input
+                type="text"
+                name="postcode"
+                label="Postcode"
+                onChange={handlePostcode}
+                value={postcode}
+                error={postcodeError}
+                classOverrides="w-full"
+            />
+
+            <Button
+                title={fetching ? 'Loading...' : 'Register'}
                 onClick={handleRegister}
-                className="mt-4 w-full rounded-lg border border-green-500 bg-green-500 py-4 font-bold tracking-wide text-white shadow-sm transition-colors hover:bg-green-700"
-            >
-                {fetching ? 'Loading' : 'Register'}
-            </button>
+                disabled={fetching}
+                classOverrides="mt-4 py-3"
+            />
         </form>
     )
 }

@@ -12,8 +12,8 @@ function BasketItem({ item }) {
 
             <div className="flex flex-row">
                 <div className="w-full">
-                    <div className="mt-2 grid grid-cols-3 items-start gap-4">
-                        <div className="col-span-2 flex items-start">
+                    <div className="mt-2 grid items-start gap-x-4 lg:grid-cols-3 lg:gap-y-4">
+                        <div className="flex items-start lg:col-span-2">
                             <img src={item.image} alt="" width="120" height="120" className="m-0" />
 
                             <div className="ml-4">
@@ -29,7 +29,7 @@ function BasketItem({ item }) {
                             </div>
                         </div>
 
-                        <div className="text-right">
+                        <div className="mt-4 grid grid-cols-2 gap-x-4 text-right lg:mt-0 lg:grid-cols-1 lg:gap-x-0">
                             {item.delivery.map((delivery) => (
                                 <DeliveryBlock
                                     key={'delivery_' + item.id + delivery.id}

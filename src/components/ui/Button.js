@@ -1,8 +1,8 @@
 import './Button.css'
 
-function Button({ title, onClick, classOverrides }) {
+function Button({ title, onClick, classOverrides, ...props }) {
     return (
-        <button type="submit" onClick={onClick} className={`btn ${classOverrides}`}>
+        <button type="submit" onClick={onClick} className={`btn ${classOverrides}`} {...props}>
             {title}
         </button>
     )

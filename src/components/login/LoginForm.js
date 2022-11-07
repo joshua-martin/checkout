@@ -1,108 +1,139 @@
 import React, { useState } from 'react'
-import { Navigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { increment } from '../../reducers/stepperSlice'
 import { login } from '../../reducers/userSlice'
+import { gql, useMutation } from '@apollo/client'
+import Input from '../ui/Input'
+import Button from '../ui/Button'
+
+const LOGIN_USER = gql`
+    mutation Login($email: String!) {
+        login(email: $email) {
+            success
+            message
+            user {
+                id
+                email
+                name
+                phone
+                addressLine
+                town
+                postcode
+            }
+        }
+    }
+`
 
 function LoginForm() {
     const dispatch = useDispatch()
+    const [loginUser, { loading, error }] = useMutation(LOGIN_USER)
 
     const [email, setEmail] = useState('')
     const [emailError, setEmailError] = useState('')
     const [password, setPassword] = useState('')
     const [passwordError, setPasswordError] = useState('')
     const [fetching, setFetching] = useState(false)
-    const [isLogged, setIsLogged] = useState(false)
-    const [showError, setShowError] = useState(false)
+    const [globalError, setGlobalError] = useState('')
 
     const handleEmail = (e) => {
         const { value } = e.target
+        setEmail(value)
+
         if (value === '') {
             setEmailError('Add email')
-            setShowError(true)
-        } else {
-            setEmail(value)
+            setGlobalError('Please correct invalid fields')
         }
     }
 
     const handlePassword = (e) => {
         const { value } = e.target
+        setPassword(value)
+
         if (value === '') {
             setPasswordError('Add password')
-            setShowError(true)
-        } else {
-            setPassword(value)
+            setGlobalError('Please correct invalid fields')
         }
     }
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault()
         if (emailError || passwordError) return
         if (!email) setEmailError('Add email')
         if (!password) setPasswordError('Add password')
         else {
             setFetching(true)
-            fetch('http://www.mocky.io/v2/5d9d9219310000153650e30b', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            })
+
+            await loginUser({ variables: { email } })
                 .then((res) => {
-                    if (res.status >= 200 && res.status <= 300) return res.json()
-                    else throw new Error('Request Failed ', res.status)
+                    if (!res) throw new Error('Request Failed ', res.status)
+
+                    return res.data.login
                 })
                 .then((data) => {
-                    setFetching(false)
-                    dispatch(login('email'))
-                    setIsLogged(true)
-                    dispatch(increment())
+                    if (!data.success) {
+                        setGlobalError(data.message)
+                        setFetching(false)
+                    } else {
+                        dispatch(login(data.user))
+                        dispatch(increment())
+                    }
                 })
                 .catch((error) => {
                     setFetching(false)
-                    setShowError(true)
-                    console.error(error)
+                    setGlobalError(error.message)
                 })
         }
     }
 
-    if (isLogged) return <Navigate to="/delivery" replace />
+    if (loading) {
+        return (
+            <div className="mb-2 rounded-lg border-2 border-blue-400 px-4 py-2 font-bold text-blue-400">
+                Please wait...
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <div className="mb-2 rounded-lg border-2 border-red-400 px-4 py-2 font-bold text-red-400">
+                {error.message}
+            </div>
+        )
+    }
 
     return (
         <form className="my-4" onSubmit={handleLogin}>
-            {showError && <p className="text-red-400">Login Failed</p>}
-            <label className="mb-2 block">
-                <span className="font-semibold">Email Address</span>
-                <input
-                    type="text"
-                    name="email"
-                    value={email}
-                    onChange={handleEmail}
-                    className="border-grey-600 mt-1 w-full rounded-md border p-2"
-                />
-                {emailError && <p className="text-red-400">{emailError}</p>}
-            </label>
-            <label>
-                <span className="font-semibold">Password</span>
-                <input
-                    type="password"
-                    name="password"
-                    error={passwordError}
-                    value={password}
-                    onChange={handlePassword}
-                    className="border-grey-600 mt-1 w-full rounded-md border p-2"
-                />
-                {passwordError && <p className="text-red-400">{passwordError}</p>}
-            </label>
-            <button
-                type="submit"
-                disabled={fetching}
+            {globalError != '' && (
+                <div className="mb-2 rounded-lg border-2 border-red-400 px-4 py-2 font-bold text-red-400">
+                    {globalError}
+                </div>
+            )}
+            <Input
+                type="text"
+                name="email"
+                label="Email Address"
+                onChange={handleEmail}
+                value={email}
+                error={emailError}
+                classOverrides="w-full"
+            />
+
+            <Input
+                type="password"
+                name="password"
+                label="Password"
+                onChange={handlePassword}
+                value={password}
+                error={passwordError}
+                classOverrides="w-full"
+            />
+
+            <Button
+                title={fetching ? 'Loading...' : 'Sign in'}
                 onClick={handleLogin}
-                className="mt-4 w-full rounded-lg border border-green-500 bg-green-500 py-4 font-bold tracking-wide text-white shadow-sm transition-colors hover:bg-green-700"
-            >
-                {fetching ? 'Loading' : 'Sign in'}
-            </button>
+                disabled={fetching}
+                classOverrides="mt-4 py-3"
+            />
         </form>
     )
 }

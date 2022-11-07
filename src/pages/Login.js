@@ -1,29 +1,34 @@
-import { useNavigate } from 'react-router-dom'
-
+import { Navigate, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { selectUser } from '../reducers/userSlice'
 import LoginForm from '../components/login/LoginForm'
 import './Login.css'
+import Button from '../components/ui/Button'
 
 function Login() {
+    const user = useSelector(selectUser)
     const navigate = useNavigate()
 
     const navigateToRegister = () => {
         navigate('/register')
     }
 
+    if (user.loggedIn) return <Navigate to="/delivery" replace />
+
     return (
-        <div className="container mx-auto my-8 max-w-2xl rounded-lg px-8 py-5 shadow-lg">
-            <h1 className="text-3xl font-bold">Sign In</h1>
-            <LoginForm />
-            <p className="divider relative mb-0 text-center text-gray-600">
-                <span className="relative inline-block bg-white px-3 font-bold">OR</span>
-            </p>
-            <button
-                type="button"
-                className="mt-4 w-full rounded-lg border border-blue-500 py-4 font-bold tracking-wide text-blue-500 shadow-sm transition-colors hover:bg-blue-500 hover:text-white"
-                onClick={navigateToRegister}
-            >
-                Checkout as guest
-            </button>
+        <div className="container mx-auto my-8 max-w-2xl">
+            <div className="rounded-lg px-8 py-5 shadow-lg">
+                <h1 className="text-3xl font-bold">Sign In</h1>
+                <LoginForm />
+                <p className="divider relative mb-0 text-center text-gray-600">
+                    <span className="relative inline-block bg-white px-3 font-bold">OR</span>
+                </p>
+                <Button
+                    title="Checkout as guest"
+                    onClick={navigateToRegister}
+                    classOverrides="btn-alternate"
+                />
+            </div>
         </div>
     )
 }
