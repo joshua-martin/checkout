@@ -1,6 +1,6 @@
 import { Navigate, useNavigate } from 'react-router-dom'
 import CheckoutItem from '../components/checkout/CheckoutItem'
-import Sidebar from '../components/layout/Sidebar'
+import Sidebar from '../components/sidebar/Sidebar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 

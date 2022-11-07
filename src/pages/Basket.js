@@ -1,4 +1,4 @@
-import Sidebar from '../components/layout/Sidebar'
+import Sidebar from '../components/sidebar/Sidebar'
 import Error from '../components/ui/Error'
 import { gql, useQuery } from '@apollo/client'
 import PurchaseElement from '../components/basket/PurchaseElement'
