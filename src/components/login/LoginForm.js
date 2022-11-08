@@ -41,13 +41,13 @@ const LoginForm = () => {
     const handleEmail = (e) => {
         const { value } = e.target
         setEmail(value)
-        setEmailError(Validate(value, 'email'))
+        setEmailError(Validate({ value, type: 'email' }))
     }
 
     const handlePassword = (e) => {
         const { value } = e.target
         setPassword(value)
-        setPasswordError(Validate(value))
+        setPasswordError(Validate({ value }))
     }
 
     const handleLogin = async (e) => {

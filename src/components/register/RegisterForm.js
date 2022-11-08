@@ -64,37 +64,37 @@ const RegisterForm = () => {
     const handleEmail = (e) => {
         const { value } = e.target
         setEmail(value)
-        setEmailError(Validate(value, 'email'))
+        setEmailError(Validate({ value, type: 'email' }))
     }
 
     const handleName = (e) => {
         const { value } = e.target
         setName(value)
-        setNameError(Validate(value))
+        setNameError(Validate({ value }))
     }
 
     const handlePhone = (e) => {
         const { value } = e.target
         setPhone(value)
-        setPhoneError(Validate(value))
+        setPhoneError(Validate({ value }))
     }
 
     const handleAddressLine = (e) => {
         const { value } = e.target
         setAddressLine(value)
-        setAddressLineError(Validate(value))
+        setAddressLineError(Validate({ value }))
     }
 
     const handleTown = (e) => {
         const { value } = e.target
         setTown(value)
-        setTownError(Validate(value))
+        setTownError(Validate({ value }))
     }
 
     const handlePostcode = (e) => {
         const { value } = e.target
         setPostcode(value)
-        setPostcodeError(Validate(value))
+        setPostcodeError(Validate({ value }))
     }
 
     const handleRegister = async (e) => {

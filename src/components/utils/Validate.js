@@ -3,7 +3,7 @@ const Validate = ({ value, type }) => {
     switch (type) {
         case 'email':
             regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
-            if (!regex.test(value)) return 'Please enter a valid email'
+            if (!regex.test(value) || value === '') return 'Please enter a valid email'
             else return ''
         default:
             if (value === '') return 'This field is required'
