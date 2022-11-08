@@ -1,17 +1,18 @@
-import { addItem } from '../../reducers/cartSlice'
-import { useDispatch } from 'react-redux'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { addItem } from '../../reducers/cartSlice'
+
 import Input from '../ui/Input'
 import Button from '../ui/Button'
 
-function PurchaseElement({ item }) {
+const PurchaseElement = ({ item }) => {
+    const dispatch = useDispatch()
+    const [quantity, setQuantity] = useState(1)
+
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'GBP'
     })
-
-    const dispatch = useDispatch()
-    const [quantity, setQuantity] = useState(1)
 
     const handleQuantity = (e) => {
         const { value } = e.target

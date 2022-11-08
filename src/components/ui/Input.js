@@ -1,6 +1,6 @@
 import './Input.css'
 
-function Input({ onChange, error, name, label, showLabel, classOverrides, ...props }) {
+const Input = ({ onChange, error, name, label, showLabel, classOverrides, ...props }) => {
     return (
         <>
             <label

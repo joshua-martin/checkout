@@ -1,19 +1,18 @@
+import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
-import CheckoutItem from '../components/checkout/CheckoutItem'
-import Sidebar from '../components/sidebar/Sidebar'
+import { useSelector, useDispatch } from 'react-redux'
+import { selectUser } from '../reducers/userSlice'
+import { toggleDiscountCode, selectCart } from '../reducers/cartSlice'
+import { gql, useLazyQuery } from '@apollo/client'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
-import { useSelector, useDispatch } from 'react-redux'
-import { selectUser } from '../reducers/userSlice'
-import { selectCart } from '../reducers/cartSlice'
+import CheckoutItem from '../components/checkout/CheckoutItem'
+import Sidebar from '../components/sidebar/Sidebar'
 import AddressBlock from '../components/checkout/AddressBlock'
 import Input from '../components/ui/Input'
 import Button from '../components/ui/Button'
-import { useState } from 'react'
-
-import { toggleDiscountCode } from '../reducers/cartSlice'
-import { gql, useLazyQuery } from '@apollo/client'
 
 const DISCOUNT_CODE = gql`
     query getCode($code: String!) {
@@ -26,11 +25,12 @@ const DISCOUNT_CODE = gql`
     }
 `
 
-function Delivery() {
-    const user = useSelector(selectUser)
-    const cart = useSelector(selectCart)
+const Delivery = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const user = useSelector(selectUser)
+    const cart = useSelector(selectCart)
 
     const [checkDiscountCode] = useLazyQuery(DISCOUNT_CODE)
 
@@ -81,7 +81,7 @@ function Delivery() {
     }
 
     return (
-        <div className="container mx-auto my-8 flex max-w-5xl flex-row flex-wrap items-start lg:space-x-6">
+        <div className="container mx-auto my-8 flex max-w-5xl flex-row flex-wrap items-start lg:flex-nowrap lg:space-x-6">
             <div className="prose-sm mb-4 w-full flex-shrink-0 rounded-lg p-6 shadow-lg lg:mb-0 lg:w-2/3">
                 <h1 className="text-3xl font-bold">Select Delivery</h1>
                 <h2 className="text-xl font-semibold">Delivery to</h2>

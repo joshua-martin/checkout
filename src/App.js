@@ -10,7 +10,7 @@ import Delivery from './pages/Delivery'
 import Payment from './pages/Payment'
 import Complete from './pages/Complete'
 
-function App() {
+const App = () => {
     return (
         <>
             <Header />

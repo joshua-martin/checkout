@@ -1,9 +1,9 @@
+import { useSelector } from 'react-redux'
+import { selectStep } from '../../reducers/stepperSlice'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import './Stepper.css'
-
-import { useSelector } from 'react-redux'
-import { selectStep } from '../../reducers/stepperSlice'
 
 const Stepper = () => {
     const step = useSelector(selectStep)
@@ -14,17 +14,18 @@ const Stepper = () => {
                 <div className="icon inline-block">
                     <div className={`roundel ${step === 0 || step > 0 ? 'active' : ''}`}>
                         {(() => {
-                            if (step > 0)
+                            if (step > 0) {
                                 return (
                                     <FontAwesomeIcon
                                         icon={solid('check')}
                                         className="rounded-full text-xl text-white"
                                     />
                                 )
-                            else
+                            } else {
                                 return (
                                     <span className="h-4 w-4 rounded-full bg-white shadow-md"></span>
                                 )
+                            }
                         })()}
                     </div>
                     <span>Your Details</span>
@@ -34,18 +35,20 @@ const Stepper = () => {
                 <div className="icon inline-block">
                     <div className={`roundel ${step === 1 || step > 1 ? 'active' : ''}`}>
                         {(() => {
-                            if (step > 1)
+                            if (step > 1) {
                                 return (
                                     <FontAwesomeIcon
                                         icon={solid('check')}
                                         className="rounded-full text-xl text-white"
                                     />
                                 )
-                            else if (step === 1)
+                            } else if (step === 1) {
                                 return (
                                     <span className="h-4 w-4 rounded-full bg-white shadow-md"></span>
                                 )
-                            else return <span className="h-4 w-4 rounded-full bg-gray-600"></span>
+                            } else {
+                                return <span className="h-4 w-4 rounded-full bg-gray-600"></span>
+                            }
                         })()}
                     </div>
                     <span>Select Delivery</span>
@@ -55,18 +58,20 @@ const Stepper = () => {
                 <div className="icon inline-block">
                     <div className={`roundel ${step >= 2 && 'active'}`}>
                         {(() => {
-                            if (step > 2)
+                            if (step > 2) {
                                 return (
                                     <FontAwesomeIcon
                                         icon={solid('check')}
                                         className="rounded-full text-xl text-white"
                                     />
                                 )
-                            else if (step === 2)
+                            } else if (step === 2) {
                                 return (
                                     <span className="h-4 w-4 rounded-full bg-white shadow-md"></span>
                                 )
-                            else return <span className="h-4 w-4 rounded-full bg-gray-600"></span>
+                            } else {
+                                return <span className="h-4 w-4 rounded-full bg-gray-600"></span>
+                            }
                         })()}
                     </div>
                     <span>Payment</span>

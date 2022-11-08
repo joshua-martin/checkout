@@ -2,7 +2,10 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { increment } from '../../reducers/stepperSlice'
 import { login } from '../../reducers/userSlice'
+
 import { gql, useMutation } from '@apollo/client'
+
+import Validate from '../utils/Validate'
 import Input from '../ui/Input'
 import Button from '../ui/Button'
 
@@ -24,7 +27,7 @@ const LOGIN_USER = gql`
     }
 `
 
-function LoginForm() {
+const LoginForm = () => {
     const dispatch = useDispatch()
     const [loginUser, { loading, error }] = useMutation(LOGIN_USER)
 
@@ -38,28 +41,21 @@ function LoginForm() {
     const handleEmail = (e) => {
         const { value } = e.target
         setEmail(value)
-
-        if (value === '') {
-            setEmailError('Add email')
-            setGlobalError('Please correct invalid fields')
-        }
+        setEmailError(Validate(value, 'email'))
     }
 
     const handlePassword = (e) => {
         const { value } = e.target
         setPassword(value)
-
-        if (value === '') {
-            setPasswordError('Add password')
-            setGlobalError('Please correct invalid fields')
-        }
+        setPasswordError(Validate(value))
     }
 
     const handleLogin = async (e) => {
         e.preventDefault()
+
         if (emailError || passwordError) return
-        if (!email) setEmailError('Add email')
-        if (!password) setPasswordError('Add password')
+        if (!email) setEmailError('This field is required')
+        if (!password) setPasswordError('This field is required')
         else {
             setFetching(true)
 

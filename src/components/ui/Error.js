@@ -1,4 +1,4 @@
-function Error({ err }) {
+const Error = ({ err }) => {
     return (
         <div className="container mx-auto my-8 flex max-w-5xl flex-row space-x-6">
             <div className="w-full flex-shrink-0 rounded-lg p-6 shadow-lg">

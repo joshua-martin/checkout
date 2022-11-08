@@ -1,9 +1,10 @@
+import { useNavigate } from 'react-router-dom'
+import { gql, useQuery } from '@apollo/client'
+
 import Sidebar from '../components/sidebar/Sidebar'
 import Error from '../components/ui/Error'
-import { gql, useQuery } from '@apollo/client'
 import PurchaseElement from '../components/basket/PurchaseElement'
 import BasketItems from '../components/basket/BasketItems'
-import { useNavigate } from 'react-router-dom'
 
 const GET_ITEMS = gql`
     query GetItems {
@@ -23,22 +24,19 @@ const GET_ITEMS = gql`
     }
 `
 
-function Basket() {
-    const { loading, error, data } = useQuery(GET_ITEMS)
+const Basket = () => {
     const navigate = useNavigate()
+    const { loading, error, data } = useQuery(GET_ITEMS)
 
     if (loading) return null
-    if (error) {
-        console.log(error)
-        return <Error err={error} />
-    }
+    if (error) return <Error err={error} />
 
     const handleBasketStep = () => {
         navigate('/login')
     }
 
     return (
-        <div className="container mx-auto my-8 flex max-w-5xl flex-row flex-wrap items-start lg:space-x-6">
+        <div className="container mx-auto my-8 flex max-w-5xl flex-row flex-wrap items-start lg:flex-nowrap lg:space-x-6">
             <div className="prose-sm mb-4 w-full flex-shrink-0 rounded-lg p-6 shadow-lg lg:mb-0 lg:w-2/3">
                 <h1>Basket</h1>
 

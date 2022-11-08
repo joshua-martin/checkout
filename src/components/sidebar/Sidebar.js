@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom'
-import Button from '../ui/Button'
 import { useSelector } from 'react-redux'
 import { selectCart } from '../../reducers/cartSlice'
+
+import Button from '../ui/Button'
 import SidebarValues from './SidebarValues'
 
-function Sidebar({ showEditButton, showButton, buttonTitle, onClick }) {
-    const cart = useSelector(selectCart)
+const Sidebar = ({ showEditButton, showButton, buttonTitle, onClick }) => {
     const navigate = useNavigate()
+    const cart = useSelector(selectCart)
 
     const handleEditStep = () => {
         navigate('/')

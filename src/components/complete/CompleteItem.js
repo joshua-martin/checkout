@@ -1,4 +1,4 @@
-function CompleteItem({ item }) {
+const CompleteItem = ({ item }) => {
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'GBP'

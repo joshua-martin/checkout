@@ -1,9 +1,10 @@
-import { toggleQuantity } from '../../reducers/cartSlice'
-import { useDispatch } from 'react-redux'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { toggleQuantity } from '../../reducers/cartSlice'
+
 import './BasketItem.css'
 
-function BasketItem({ item }) {
+const BasketItem = ({ item }) => {
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'GBP'

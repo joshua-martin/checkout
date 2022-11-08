@@ -1,17 +1,17 @@
 import { useDispatch } from 'react-redux'
 import { toggleDelivery } from '../../reducers/cartSlice'
 
-function DeliveryBlock({ item, delivery }) {
+const DeliveryBlock = ({ item, delivery }) => {
     const dispatch = useDispatch()
-
-    const changeDeliveryOption = () => {
-        dispatch(toggleDelivery({ item: item, deliveryOption: delivery }))
-    }
 
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'GBP'
     })
+
+    const changeDeliveryOption = () => {
+        dispatch(toggleDelivery({ item: item, deliveryOption: delivery }))
+    }
 
     return (
         <label

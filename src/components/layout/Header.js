@@ -1,10 +1,11 @@
-import { ReactComponent as Logo } from './Logo.svg'
-import { selectUser, logout } from '../../reducers/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { selectUser, logout } from '../../reducers/userSlice'
+
+import { ReactComponent as Logo } from './Logo.svg'
 
 const Header = () => {
-    const user = useSelector(selectUser)
     const dispatch = useDispatch()
+    const user = useSelector(selectUser)
 
     const logoutHandler = () => {
         dispatch(logout())

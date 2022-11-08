@@ -9,13 +9,12 @@ import { store } from './app/store'
 import { Provider } from 'react-redux'
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
-
-const root = ReactDOM.createRoot(document.querySelector('.checkout-app'))
-
 const client = new ApolloClient({
     uri: 'http://localhost:4000/',
     cache: new InMemoryCache()
 })
+
+const root = ReactDOM.createRoot(document.querySelector('.checkout-app'))
 
 root.render(
     <ApolloProvider client={client}>

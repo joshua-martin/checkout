@@ -1,4 +1,4 @@
-function AddressBlock({ user }) {
+const AddressBlock = ({ user }) => {
     return (
         <>
             {user.name}

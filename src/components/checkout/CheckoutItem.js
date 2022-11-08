@@ -1,6 +1,6 @@
 import DeliveryBlock from './DeliveryBlock'
 
-function CheckoutItem({ item }) {
+const CheckoutItem = ({ item }) => {
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'GBP'

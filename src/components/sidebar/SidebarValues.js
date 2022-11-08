@@ -1,4 +1,4 @@
-export default function SidebarValues({ cart }) {
+const SidebarValues = ({ cart }) => {
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'GBP'
@@ -36,3 +36,5 @@ export default function SidebarValues({ cart }) {
         </>
     )
 }
+
+export default SidebarValues

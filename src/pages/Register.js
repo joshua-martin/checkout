@@ -1,11 +1,12 @@
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../reducers/userSlice'
+
 import RegisterForm from '../components/register/RegisterForm'
 
-function Register() {
-    const user = useSelector(selectUser)
+const Register = () => {
     const navigate = useNavigate()
+    const user = useSelector(selectUser)
 
     const navigateToLogin = () => {
         navigate('/login')

@@ -1,8 +1,9 @@
 import { useSelector } from 'react-redux'
 import { selectCart } from '../../reducers/cartSlice'
+
 import BasketItem from './BasketItem'
 
-function BasketItems() {
+const BasketItems = () => {
     const cart = useSelector(selectCart)
 
     if (cart.totalItems === 0) {

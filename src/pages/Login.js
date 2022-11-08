@@ -1,13 +1,14 @@
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../reducers/userSlice'
-import LoginForm from '../components/login/LoginForm'
-import './Login.css'
-import Button from '../components/ui/Button'
 
-function Login() {
-    const user = useSelector(selectUser)
+import LoginForm from '../components/login/LoginForm'
+import Button from '../components/ui/Button'
+import './Login.css'
+
+const Login = () => {
     const navigate = useNavigate()
+    const user = useSelector(selectUser)
 
     const navigateToRegister = () => {
         navigate('/register')

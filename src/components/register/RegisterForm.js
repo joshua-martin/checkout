@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { increment } from '../../reducers/stepperSlice'
 import { login } from '../../reducers/userSlice'
+
+import { gql, useMutation } from '@apollo/client'
+
+import Validate from '../utils/Validate'
 import Input from '../ui/Input'
 import Button from '../ui/Button'
-import { gql, useMutation } from '@apollo/client'
 
 const REGISTER_USER = gql`
     mutation Register(
@@ -38,7 +41,7 @@ const REGISTER_USER = gql`
     }
 `
 
-function RegisterForm() {
+const RegisterForm = () => {
     const dispatch = useDispatch()
     const [registerUser, { loading, error }] = useMutation(REGISTER_USER)
 
@@ -61,50 +64,58 @@ function RegisterForm() {
     const handleEmail = (e) => {
         const { value } = e.target
         setEmail(value)
-        if (value === '') return setEmailError('Add email')
+        setEmailError(Validate(value, 'email'))
     }
 
     const handleName = (e) => {
         const { value } = e.target
         setName(value)
-        if (value === '') return setNameError('Add name')
+        setNameError(Validate(value))
     }
 
     const handlePhone = (e) => {
         const { value } = e.target
         setPhone(value)
-        if (value === '') return setPhoneError('Add number')
+        setPhoneError(Validate(value))
     }
 
     const handleAddressLine = (e) => {
         const { value } = e.target
         setAddressLine(value)
-        if (value === '') return setAddressLineError('Add address line')
+        setAddressLineError(Validate(value))
     }
 
     const handleTown = (e) => {
         const { value } = e.target
         setTown(value)
-        if (value === '') return setTownError('Add town')
+        setTownError(Validate(value))
     }
 
     const handlePostcode = (e) => {
         const { value } = e.target
         setPostcode(value)
-        if (value === '') return setPostcodeError('Add postcode')
+        setPostcodeError(Validate(value))
     }
 
     const handleRegister = async (e) => {
         e.preventDefault()
-        if (emailError || nameError || phoneError || addressLineError || townError || postcodeError)
+        if (
+            emailError ||
+            nameError ||
+            phoneError ||
+            addressLineError ||
+            townError ||
+            postcodeError
+        ) {
             return
+        }
 
-        if (!email) setEmailError('Add email')
-        if (!name) setNameError('Add name')
-        if (!phone) setPhoneError('Add number')
-        if (!addressLine) setAddressLineError('Add address line')
-        if (!town) setTownError('Add town')
-        if (!postcode) setPostcodeError('Add postcode')
+        if (!email) setEmailError('This field is required')
+        if (!name) setNameError('This field is required')
+        if (!phone) setPhoneError('This field is required')
+        if (!addressLine) setAddressLineError('This field is required')
+        if (!town) setTownError('This field is required')
+        if (!postcode) setPostcodeError('This field is required')
         else {
             setFetching(true)
             await registerUser({
