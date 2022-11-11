@@ -2,9 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { increment } from '../../reducers/stepperSlice'
 import { login } from '../../reducers/userSlice'
-
 import { gql, useMutation } from '@apollo/client'
-
 import Validate from '../utils/Validate'
 import Input from '../ui/Input'
 import Button from '../ui/Button'
