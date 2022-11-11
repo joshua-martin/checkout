@@ -1,4 +1,10 @@
-const SidebarValues = ({ cart }) => {
+import { CartState } from '../../reducers/cartSlice'
+
+interface Cart {
+    cart: CartState
+}
+
+const SidebarValues = ({ cart }: Cart) => {
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'GBP'

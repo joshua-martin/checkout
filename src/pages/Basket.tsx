@@ -5,6 +5,7 @@ import Sidebar from '../components/sidebar/Sidebar'
 import Error from '../components/ui/Error'
 import PurchaseElement from '../components/basket/PurchaseElement'
 import BasketItems from '../components/basket/BasketItems'
+import { CartItem } from '../reducers/cartSlice'
 
 const GET_ITEMS = gql`
     query GetItems {
@@ -44,7 +45,7 @@ const Basket = () => {
 
                 <hr className="my-4" />
                 <div className="grid gap-y-2 lg:grid-cols-3 lg:gap-x-2">
-                    {data.items.map((item) =>
+                    {data.items.map((item: CartItem) =>
                         (() => {
                             return <PurchaseElement item={item} key={item.id} />
                         })()

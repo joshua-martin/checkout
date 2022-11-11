@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectUser } from '../reducers/userSlice'
-import { toggleDiscountCode, selectCart } from '../reducers/cartSlice'
-import { gql, useLazyQuery } from '@apollo/client'
+import { toggleDiscountCode, selectCart, CartItem } from '../reducers/cartSlice'
+import { gql, QueryResult, useLazyQuery } from '@apollo/client'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
@@ -25,6 +25,21 @@ const DISCOUNT_CODE = gql`
     }
 `
 
+interface DiscountCode {
+    id: number
+    code: string
+    discount: number
+    type: string
+}
+
+interface DiscountCodeData {
+    discountCode: DiscountCode
+}
+
+interface DiscountCodeVars {
+    code: string
+}
+
 const Delivery = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -32,7 +47,7 @@ const Delivery = () => {
     const user = useSelector(selectUser)
     const cart = useSelector(selectCart)
 
-    const [checkDiscountCode] = useLazyQuery(DISCOUNT_CODE)
+    const [checkDiscountCode] = useLazyQuery<DiscountCodeData, DiscountCodeVars>(DISCOUNT_CODE)
 
     const [discountCode, setDiscountCode] = useState('')
     const [discountError, setDiscountError] = useState('')
@@ -56,7 +71,7 @@ const Delivery = () => {
             variables: { code: discountCode }
         })
             .then((res) => {
-                if (!res) throw new Error('Request Failed ', res.status)
+                if (!res) throw new Error('Request Failed')
 
                 return res.data.discountCode
             })
@@ -78,6 +93,15 @@ const Delivery = () => {
         const { value } = e.target
 
         setDiscountCode(value)
+    }
+
+    const discountCodeProps = {
+        type: 'text',
+        value: discountCode
+    }
+
+    const discountButtonProps = {
+        disabled: discountCode === ''
     }
 
     return (
@@ -119,15 +143,15 @@ const Delivery = () => {
                                     )}
                                     <form onSubmit={handleDiscountCode} className="flex flex-row">
                                         <Input
-                                            type="text"
-                                            value={discountCode}
+                                            {...discountCodeProps}
                                             name="discount"
                                             onChange={activateButton}
                                         />
                                         <Button
+                                            {...discountButtonProps}
                                             title="Add Code"
                                             classOverrides="px-4 ml-2"
-                                            disabled={discountCode === ''}
+                                            onClick={handleDiscountCode}
                                         />
                                     </form>
                                 </>
@@ -143,7 +167,7 @@ const Delivery = () => {
                     </p>
                 )}
                 <hr className="my-4" />
-                {cart.items.map((item) => (
+                {cart.items.map((item: CartItem) => (
                     <CheckoutItem key={`checkout_` + item.id} item={item} />
                 ))}
             </div>

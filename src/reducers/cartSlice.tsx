@@ -1,15 +1,44 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+export interface DiscountItem {
+    amount?: number
+    code?: string
+}
+export interface DeliveryItem {
+    id: number
+    title: string
+    price: number
+    default: boolean
+}
+export interface CartItem {
+    id: number
+    title: string
+    seller: string
+    price: number
+    image: string
+    quantity: number
+    delivery: DeliveryItem[]
+}
+export interface CartState {
+    items: CartItem[]
+    totalItems: number
+    subtotal: number
+    delivery: number
+    total: number
+    discount: DiscountItem
+}
+const initialState: CartState = {
+    items: [],
+    totalItems: 0,
+    subtotal: 0,
+    delivery: 0,
+    total: 0,
+    discount: {}
+}
+
 export const cartSlice = createSlice({
     name: 'cart',
-    initialState: {
-        items: [],
-        totalItems: 0,
-        subtotal: 0,
-        delivery: 0,
-        total: 0,
-        discount: {}
-    },
+    initialState,
     reducers: {
         toggleQuantity: (state, actions) => {
             const cartItem = state.items.find((i) => i.id === actions.payload.item.id)

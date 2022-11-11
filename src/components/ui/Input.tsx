@@ -1,6 +1,17 @@
+import { ChangeEventHandler, ComponentPropsWithoutRef } from 'react'
 import './Input.css'
 
-const Input = ({ onChange, error, name, label, showLabel, classOverrides, ...props }) => {
+interface Input {
+    onChange: ChangeEventHandler
+    error?: string
+    name: string
+    label?: string
+    showLabel?: boolean
+    classOverrides?: string
+    props?: ComponentPropsWithoutRef<'input'>
+}
+
+const Input = ({ onChange, error, name, label, showLabel, classOverrides, ...props }: Input) => {
     return (
         <>
             <label
