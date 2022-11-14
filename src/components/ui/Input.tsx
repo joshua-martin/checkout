@@ -1,11 +1,6 @@
 import { ChangeEventHandler } from 'react'
 import './Input.css'
 
-interface AvailableProps {
-    type: string
-    value: any
-}
-
 interface Input {
     onChange: ChangeEventHandler
     name: string

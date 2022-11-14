@@ -1,5 +1,3 @@
-import { CartItem } from '../../reducers/cartSlice'
-
 const CompleteItem = ({ item }) => {
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',

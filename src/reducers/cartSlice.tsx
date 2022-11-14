@@ -87,7 +87,7 @@ export const cartSlice = createSlice({
                 state.discount = {}
             } else {
                 const discountType = discount.type
-                let discountAmount =
+                const discountAmount =
                     discountType === 'percentage'
                         ? state.total * (1 - (1 - discount.discount / 100))
                         : discount.discount
@@ -112,7 +112,7 @@ export const cartSlice = createSlice({
             let subtotal = 0
             let delivery = 0
             let totalItems = 0
-            let discount = state.discount.amount ?? 0
+            const discount = state.discount.amount ?? 0
 
             state.items.map((i) => {
                 totalItems += i.quantity

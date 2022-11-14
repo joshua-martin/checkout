@@ -1,4 +1,4 @@
-import { MouseEventHandler, ComponentPropsWithoutRef } from 'react'
+import { MouseEventHandler } from 'react'
 import './Button.css'
 
 interface Button {

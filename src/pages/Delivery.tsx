@@ -4,7 +4,7 @@ import { useAppSelector, useAppDispatch } from '../app/hooks'
 
 import { selectUser } from '../reducers/userSlice'
 import { toggleDiscountCode, selectCart, CartItem } from '../reducers/cartSlice'
-import { gql, QueryResult, useLazyQuery } from '@apollo/client'
+import { gql, useLazyQuery } from '@apollo/client'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
