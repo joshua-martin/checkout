@@ -1,10 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit'
+import type { RootState } from '../app/store'
+
+interface Step {
+    value: number
+}
+
+const initialState: Step = {
+    value: 0
+}
 
 export const stepperSlice = createSlice({
     name: 'step',
-    initialState: {
-        value: 0
-    },
+    initialState,
     reducers: {
         increment: (state) => {
             state.value += 1
@@ -17,6 +24,6 @@ export const stepperSlice = createSlice({
 
 export const { increment, decrement } = stepperSlice.actions
 
-export const selectStep = (state) => state.step.value
+export const selectStep = (state: RootState) => state.step.value
 
 export default stepperSlice.reducer

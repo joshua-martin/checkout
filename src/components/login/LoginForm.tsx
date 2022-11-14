@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { increment } from '../../reducers/stepperSlice'
 import { login } from '../../reducers/userSlice'
@@ -59,7 +59,7 @@ const LoginForm = () => {
 
             await loginUser({ variables: { email } })
                 .then((res) => {
-                    if (!res) throw new Error('Request Failed ', res.status)
+                    if (!res) throw new Error('Request Failed ')
 
                     return res.data.login
                 })

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useAppSelector, useAppDispatch } from '../app/hooks'
+
 import { selectUser } from '../reducers/userSlice'
 import { toggleDiscountCode, selectCart, CartItem } from '../reducers/cartSlice'
 import { gql, QueryResult, useLazyQuery } from '@apollo/client'
@@ -41,11 +42,11 @@ interface DiscountCodeVars {
 }
 
 const Delivery = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
-    const user = useSelector(selectUser)
-    const cart = useSelector(selectCart)
+    const user = useAppSelector(selectUser)
+    const cart = useAppSelector(selectCart)
 
     const [checkDiscountCode] = useLazyQuery<DiscountCodeData, DiscountCodeVars>(DISCOUNT_CODE)
 
@@ -95,15 +96,6 @@ const Delivery = () => {
         setDiscountCode(value)
     }
 
-    const discountCodeProps = {
-        type: 'text',
-        value: discountCode
-    }
-
-    const discountButtonProps = {
-        disabled: discountCode === ''
-    }
-
     return (
         <div className="container mx-auto my-8 flex max-w-5xl flex-row flex-wrap items-start lg:flex-nowrap lg:space-x-6">
             <div className="prose-sm mb-4 w-full flex-shrink-0 rounded-lg p-6 shadow-lg lg:mb-0 lg:w-2/3">
@@ -143,12 +135,13 @@ const Delivery = () => {
                                     )}
                                     <form onSubmit={handleDiscountCode} className="flex flex-row">
                                         <Input
-                                            {...discountCodeProps}
+                                            type="text"
+                                            value={discountCode}
                                             name="discount"
                                             onChange={activateButton}
                                         />
                                         <Button
-                                            {...discountButtonProps}
+                                            disabled={discountCode === ''}
                                             title="Add Code"
                                             classOverrides="px-4 ml-2"
                                             onClick={handleDiscountCode}

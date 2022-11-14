@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppSelector, useAppDispatch } from '../app/hooks'
 import { useNavigate } from 'react-router-dom'
 import { selectUser } from '../reducers/userSlice'
 import { increment } from '../reducers/stepperSlice'
@@ -10,9 +10,9 @@ import Button from '../components/ui/Button'
 
 const Payment = () => {
     const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const user = useSelector(selectUser)
-    const cart = useSelector(selectCart)
+    const dispatch = useAppDispatch()
+    const user = useAppSelector(selectUser)
+    const cart = useAppSelector(selectCart)
 
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',

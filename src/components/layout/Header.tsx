@@ -1,11 +1,10 @@
-import { useDispatch, useSelector } from 'react-redux'
 import { selectUser, logout } from '../../reducers/userSlice'
-
+import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import { ReactComponent as Logo } from './Logo.svg'
 
 const Header = () => {
-    const dispatch = useDispatch()
-    const user = useSelector(selectUser)
+    const dispatch = useAppDispatch()
+    const user = useAppSelector(selectUser)
 
     const logoutHandler = () => {
         dispatch(logout())

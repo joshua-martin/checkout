@@ -33,7 +33,6 @@ const typeDefs = gql`
         addressLine: String
         town: String
         postcode: String
-        token: String
     }
 
     type UserLoginResponse {

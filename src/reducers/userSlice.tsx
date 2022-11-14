@@ -1,11 +1,30 @@
 import { createSlice } from '@reduxjs/toolkit'
+import type { RootState } from '../app/store'
+
+interface UserProfile {
+    id?: number
+    email?: string
+    password?: string
+    name?: string
+    phone?: string
+    addressLine?: string
+    town?: string
+    postcode?: string
+}
+
+interface User {
+    loggedIn: boolean
+    user: UserProfile
+}
+
+const initialState: User = {
+    loggedIn: false,
+    user: {}
+}
 
 export const userSlice = createSlice({
     name: 'user',
-    initialState: {
-        loggedIn: false,
-        user: {}
-    },
+    initialState,
     reducers: {
         login: (state, action) => {
             state.loggedIn = true
@@ -20,6 +39,6 @@ export const userSlice = createSlice({
 
 export const { login, logout } = userSlice.actions
 
-export const selectUser = (state) => state.user
+export const selectUser = (state: RootState) => state.user
 
 export default userSlice.reducer

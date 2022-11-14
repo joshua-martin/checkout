@@ -1,16 +1,15 @@
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import { selectUser } from '../reducers/userSlice'
-import { selectCart } from '../reducers/cartSlice'
-
+import { CartItem, selectCart } from '../reducers/cartSlice'
+import { useAppSelector } from '../app/hooks'
 import AddressBlock from '../components/checkout/AddressBlock'
 import SidebarValues from '../components/sidebar/SidebarValues'
 import CompleteItem from '../components/complete/CompleteItem'
 
 const Payment = () => {
     const navigate = useNavigate()
-    const user = useSelector(selectUser)
-    const cart = useSelector(selectCart)
+    const user = useAppSelector(selectUser)
+    const cart = useAppSelector(selectCart)
 
     if (!user.loggedIn) {
         navigate('/')
@@ -23,7 +22,7 @@ const Payment = () => {
                 <h2 className="text-xl font-semibold">Deliver to</h2>
                 <AddressBlock user={user.user} />
                 <hr className="my-4" />
-                {cart.items.map((item) => (
+                {cart.items.map((item: CartItem) => (
                     <CompleteItem key={`complete_` + item.id} item={item} />
                 ))}
                 <SidebarValues cart={cart} />

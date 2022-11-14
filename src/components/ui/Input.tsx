@@ -1,17 +1,23 @@
-import { ChangeEventHandler, ComponentPropsWithoutRef } from 'react'
+import { ChangeEventHandler } from 'react'
 import './Input.css'
+
+interface AvailableProps {
+    type: string
+    value: any
+}
 
 interface Input {
     onChange: ChangeEventHandler
-    error?: string
     name: string
+    type: string
+    value: any
+    error?: string
     label?: string
     showLabel?: boolean
     classOverrides?: string
-    props?: ComponentPropsWithoutRef<'input'>
 }
 
-const Input = ({ onChange, error, name, label, showLabel, classOverrides, ...props }: Input) => {
+const Input = ({ onChange, error, name, label, showLabel, classOverrides, type, value }: Input) => {
     return (
         <>
             <label
@@ -25,7 +31,8 @@ const Input = ({ onChange, error, name, label, showLabel, classOverrides, ...pro
                 name={name}
                 onChange={onChange}
                 className={`border-grey-600 mt-1 rounded-md border p-2 ${classOverrides}`}
-                {...props}
+                type={type}
+                value={value}
             />
             {error && (
                 <p className="error mt-1 text-sm font-bold text-red-400" role="alert">

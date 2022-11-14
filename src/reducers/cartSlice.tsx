@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import type { RootState } from '../app/store'
 
 export interface DiscountItem {
     amount?: number
@@ -136,6 +137,6 @@ export const cartSlice = createSlice({
 export const { toggleQuantity, addItem, removeItem, toggleDiscountCode, toggleDelivery } =
     cartSlice.actions
 
-export const selectCart = (state) => state.cart
+export const selectCart = (state: RootState) => state.cart
 
 export default cartSlice.reducer

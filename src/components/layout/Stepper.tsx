@@ -1,12 +1,11 @@
-import { useSelector } from 'react-redux'
 import { selectStep } from '../../reducers/stepperSlice'
-
+import { useAppSelector } from '../../app/hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import './Stepper.css'
 
 const Stepper = () => {
-    const step = useSelector(selectStep)
+    const step = useAppSelector(selectStep)
 
     return (
         <div className="relative mx-auto mt-12 flex w-full max-w-2xl justify-center px-4">

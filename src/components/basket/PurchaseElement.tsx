@@ -38,7 +38,6 @@ const PurchaseElement = ({ item }) => {
                     value={quantity}
                     showLabel={false}
                     onChange={handleQuantity}
-                    min="1"
                     classOverrides="w-1/3"
                 />
 

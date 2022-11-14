@@ -1,4 +1,9 @@
-const Validate = ({ value, type }) => {
+interface Validate {
+    value: string
+    type?: string
+}
+
+const Validate = ({ value, type }: Validate) => {
     let regex = /./
     switch (type) {
         case 'email':

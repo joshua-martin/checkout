@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { increment } from '../../reducers/stepperSlice'
 import { login } from '../../reducers/userSlice'
@@ -59,7 +59,7 @@ const RegisterForm = () => {
     const [postcodeError, setPostcodeError] = useState('')
 
     const [fetching, setFetching] = useState(false)
-    const [globalError, setGlobalError] = useState(false)
+    const [globalError, setGlobalError] = useState('')
 
     const handleEmail = (e) => {
         const { value } = e.target
@@ -122,7 +122,7 @@ const RegisterForm = () => {
                 variables: { email, name, phone, addressLine, town, postcode }
             })
                 .then((res) => {
-                    if (!res) throw new Error('Request Failed ', res.status)
+                    if (!res) throw new Error('Request Failed')
 
                     return res.data.register
                 })

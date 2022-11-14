@@ -5,12 +5,16 @@ interface Button {
     title: string
     onClick?: MouseEventHandler
     classOverrides?: string
-    props?: ComponentPropsWithoutRef<'button'>
+    disabled?: boolean
 }
 
-const Button = ({ title, onClick, classOverrides, ...props }: Button) => {
+const Button = ({ title, onClick, classOverrides, disabled }: Button) => {
     return (
-        <button type="submit" onClick={onClick} className={`btn ${classOverrides}`} {...props}>
+        <button
+            type="submit"
+            onClick={onClick}
+            className={`btn ${classOverrides}`}
+            disabled={disabled}>
             {title}
         </button>
     )

@@ -1,10 +1,12 @@
-import DeliveryBlock from './DeliveryBlock'
+import { CartItem } from '../../reducers/cartSlice'
 
-const CheckoutItem = ({ item }) => {
+const CompleteItem = ({ item }) => {
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'GBP'
     })
+
+    const delivery = item.delivery.find((d) => d.default)
 
     return (
         <div className="mb-2 rounded-lg border p-4">
@@ -23,20 +25,13 @@ const CheckoutItem = ({ item }) => {
                                         {formatter.format((item.price / 100) * item.quantity)}
                                     </strong>
                                 </p>
-                                <p className="mt-1 font-semibold text-gray-600">
+                                <p className="mt-1 mb-1 font-semibold text-gray-600">
                                     Qty {item.quantity}
                                 </p>
+                                <p className="m-0">
+                                    Delivery: <strong>{delivery.title}</strong>
+                                </p>
                             </div>
-                        </div>
-
-                        <div className="mt-4 grid grid-cols-2 gap-x-4 text-right lg:mt-0 lg:grid-cols-1 lg:gap-x-0">
-                            {item.delivery.map((delivery) => (
-                                <DeliveryBlock
-                                    key={'delivery_' + item.id + delivery.id}
-                                    item={item.id}
-                                    delivery={delivery}
-                                />
-                            ))}
                         </div>
                     </div>
                 </div>
@@ -45,4 +40,4 @@ const CheckoutItem = ({ item }) => {
     )
 }
 
-export default CheckoutItem
+export default CompleteItem

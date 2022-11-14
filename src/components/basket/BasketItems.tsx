@@ -1,10 +1,10 @@
-import { useSelector } from 'react-redux'
-import { selectCart } from '../../reducers/cartSlice'
+import { CartItem, selectCart } from '../../reducers/cartSlice'
+import { useAppSelector } from '../../app/hooks'
 
 import BasketItem from './BasketItem'
 
 const BasketItems = () => {
-    const cart = useSelector(selectCart)
+    const cart = useAppSelector(selectCart)
 
     if (cart.totalItems === 0) {
         return (
@@ -13,7 +13,9 @@ const BasketItems = () => {
             </p>
         )
     } else {
-        return cart.items.map((item) => <BasketItem key={`basket_` + item.id} item={item} />)
+        return cart.items.map((item: CartItem) => (
+            <BasketItem key={`basket_` + item.id} item={item} />
+        ))
     }
 }
 

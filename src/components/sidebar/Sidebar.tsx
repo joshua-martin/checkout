@@ -1,13 +1,20 @@
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import { selectCart } from '../../reducers/cartSlice'
-
+import { useAppSelector } from '../../app/hooks'
 import Button from '../ui/Button'
 import SidebarValues from './SidebarValues'
+import { MouseEventHandler } from 'react'
 
-const Sidebar = ({ showEditButton, showButton, buttonTitle, onClick }) => {
+interface Sidebar {
+    showEditButton?: boolean
+    showButton?: boolean
+    buttonTitle?: string
+    onClick?: MouseEventHandler
+}
+
+const Sidebar = ({ showEditButton, showButton, buttonTitle, onClick }: Sidebar) => {
     const navigate = useNavigate()
-    const cart = useSelector(selectCart)
+    const cart = useAppSelector(selectCart)
 
     const handleEditStep = () => {
         navigate('/')
