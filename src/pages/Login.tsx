@@ -1,4 +1,5 @@
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useCallback, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAppSelector } from '../app/hooks'
 import { selectUser } from '../reducers/userSlice'
 
@@ -10,11 +11,15 @@ const Login = () => {
     const navigate = useNavigate()
     const user = useAppSelector(selectUser)
 
-    const navigateToRegister = () => {
+    const navigateToRegister = useCallback(() => {
         navigate('/register')
-    }
+    }, [navigate])
 
-    if (user.loggedIn) return <Navigate to="/delivery" replace />
+    useEffect(() => {
+        if (user.loggedIn) {
+            navigate('/delivery')
+        }
+    })
 
     return (
         <div className="container mx-auto my-8 max-w-2xl">

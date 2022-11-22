@@ -1,9 +1,9 @@
-import { CartItem, selectCart } from '../../reducers/cartSlice'
+import { selectCart } from '../../reducers/cartSlice'
 import { useAppSelector } from '../../app/hooks'
 
 import BasketItem from './BasketItem'
 
-const BasketItems = () => {
+const BasketItems: any = () => {
     const cart = useAppSelector(selectCart)
 
     if (cart.totalItems === 0) {
@@ -13,9 +13,7 @@ const BasketItems = () => {
             </p>
         )
     } else {
-        return cart.items.map((item: CartItem) => (
-            <BasketItem key={`basket_` + item.id} item={item} />
-        ))
+        return cart.items.map((item) => <BasketItem key={`basket_` + item.id} item={item} />)
     }
 }
 

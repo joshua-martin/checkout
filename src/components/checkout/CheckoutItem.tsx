@@ -1,7 +1,11 @@
 import DeliveryBlock from './DeliveryBlock'
-import { DeliveryItem } from '../../reducers/cartSlice'
+import { CartItem } from '../../reducers/cartSlice'
 
-const CheckoutItem = ({ item }) => {
+type Props = {
+    item: CartItem
+}
+
+const CheckoutItem = ({ item }: Props) => {
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'GBP'
@@ -31,7 +35,7 @@ const CheckoutItem = ({ item }) => {
                         </div>
 
                         <div className="mt-4 grid grid-cols-2 gap-x-4 text-right lg:mt-0 lg:grid-cols-1 lg:gap-x-0">
-                            {item.delivery.map((delivery: DeliveryItem) => (
+                            {item.delivery.map((delivery) => (
                                 <DeliveryBlock
                                     key={'delivery_' + item.id + delivery.id}
                                     item={item.id}

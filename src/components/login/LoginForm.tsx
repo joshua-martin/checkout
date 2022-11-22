@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { increment } from '../../reducers/stepperSlice'
+
 import { login } from '../../reducers/userSlice'
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
+import { graphql } from '../../gql'
+
 import Validate from '../utils/Validate'
 import Input from '../ui/Input'
 import Button from '../ui/Button'
 
-const LOGIN_USER = gql`
+const LOGIN_USER = graphql(`
     mutation Login($email: String!) {
         login(email: $email) {
             success
@@ -23,17 +26,28 @@ const LOGIN_USER = gql`
             }
         }
     }
-`
+`)
 
 const LoginForm = () => {
     const dispatch = useDispatch()
-    const [loginUser, { loading, error }] = useMutation(LOGIN_USER)
+    const [loginUser, { loading }] = useMutation(LOGIN_USER, {
+        onError: (error) => {
+            setGlobalError(error.message)
+        },
+        onCompleted: (data) => {
+            if (!data.login.success) {
+                setGlobalError(data.login.message)
+            } else {
+                dispatch(login(data.login.user))
+                dispatch(increment())
+            }
+        }
+    })
 
     const [email, setEmail] = useState('')
     const [emailError, setEmailError] = useState('')
     const [password, setPassword] = useState('')
     const [passwordError, setPasswordError] = useState('')
-    const [fetching, setFetching] = useState(false)
     const [globalError, setGlobalError] = useState('')
 
     const handleEmail = (e) => {
@@ -48,34 +62,14 @@ const LoginForm = () => {
         setPasswordError(Validate({ value }))
     }
 
-    const handleLogin = async (e) => {
+    const handleLogin = (e) => {
         e.preventDefault()
 
         if (emailError || passwordError) return
         if (!email) setEmailError('This field is required')
         if (!password) setPasswordError('This field is required')
         else {
-            setFetching(true)
-
-            await loginUser({ variables: { email } })
-                .then((res) => {
-                    if (!res) throw new Error('Request Failed ')
-
-                    return res.data.login
-                })
-                .then((data) => {
-                    if (!data.success) {
-                        setGlobalError(data.message)
-                        setFetching(false)
-                    } else {
-                        dispatch(login(data.user))
-                        dispatch(increment())
-                    }
-                })
-                .catch((error) => {
-                    setFetching(false)
-                    setGlobalError(error.message)
-                })
+            loginUser({ variables: { email } })
         }
     }
 
@@ -83,14 +77,6 @@ const LoginForm = () => {
         return (
             <div className="mb-2 rounded-lg border-2 border-blue-400 px-4 py-2 font-bold text-blue-400">
                 Please wait...
-            </div>
-        )
-    }
-
-    if (error) {
-        return (
-            <div className="mb-2 rounded-lg border-2 border-red-400 px-4 py-2 font-bold text-red-400">
-                {error.message}
             </div>
         )
     }
@@ -123,9 +109,9 @@ const LoginForm = () => {
             />
 
             <Button
-                title={fetching ? 'Loading...' : 'Sign in'}
+                title={loading ? 'Loading...' : 'Sign in'}
                 onClick={handleLogin}
-                disabled={fetching}
+                disabled={loading}
                 classOverrides="mt-4 py-3"
             />
         </form>

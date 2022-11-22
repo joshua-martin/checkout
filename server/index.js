@@ -1,64 +1,7 @@
 const { ApolloServer, gql } = require('apollo-server')
+const { readFileSync } = require('node:fs')
 
-const typeDefs = gql`
-    type DeliveryOption {
-        id: ID!
-        title: String
-        price: Int
-        default: Boolean
-    }
-
-    type DiscountCode {
-        id: ID!
-        code: String
-        discount: Int
-        type: String
-    }
-
-    type Item {
-        id: ID!
-        title: String
-        seller: String
-        price: Int
-        image: String
-        delivery: [DeliveryOption]
-    }
-
-    type User {
-        id: ID!
-        email: String!
-        password: String!
-        name: String
-        phone: String
-        addressLine: String
-        town: String
-        postcode: String
-    }
-
-    type UserLoginResponse {
-        success: Boolean!
-        message: String
-        user: [User]
-    }
-
-    type Mutation {
-        login(email: String!): UserLoginResponse!
-        register(
-            email: String!
-            name: String
-            phone: String
-            addressLine: String
-            town: String
-            postcode: String
-        ): UserLoginResponse!
-    }
-
-    type Query {
-        items: [Item]
-        discountCodes: [DiscountCode]
-        discountCode(code: String!): DiscountCode
-    }
-`
+const typeDefs = readFileSync('./schema.gql', 'utf8')
 
 const items = [
     {

@@ -1,10 +1,11 @@
-import { useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useState, useEffect, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAppSelector, useAppDispatch } from '../app/hooks'
 
 import { selectUser } from '../reducers/userSlice'
-import { toggleDiscountCode, selectCart, CartItem } from '../reducers/cartSlice'
-import { gql, useLazyQuery } from '@apollo/client'
+import { toggleDiscountCode, selectCart } from '../reducers/cartSlice'
+import { useLazyQuery } from '@apollo/client'
+import { graphql } from '../gql'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
@@ -15,7 +16,7 @@ import AddressBlock from '../components/checkout/AddressBlock'
 import Input from '../components/ui/Input'
 import Button from '../components/ui/Button'
 
-const DISCOUNT_CODE = gql`
+const DISCOUNT_CODE = graphql(`
     query getCode($code: String!) {
         discountCode(code: $code) {
             id
@@ -24,22 +25,7 @@ const DISCOUNT_CODE = gql`
             type
         }
     }
-`
-
-interface DiscountCode {
-    id: number
-    code: string
-    discount: number
-    type: string
-}
-
-interface DiscountCodeData {
-    discountCode: DiscountCode
-}
-
-interface DiscountCodeVars {
-    code: string
-}
+`)
 
 const Delivery = () => {
     const dispatch = useAppDispatch()
@@ -48,46 +34,41 @@ const Delivery = () => {
     const user = useAppSelector(selectUser)
     const cart = useAppSelector(selectCart)
 
-    const [checkDiscountCode] = useLazyQuery<DiscountCodeData, DiscountCodeVars>(DISCOUNT_CODE)
+    const [checkDiscountCode] = useLazyQuery(DISCOUNT_CODE, {
+        onError: (error) => {
+            throw new Error(error.message)
+        },
+        onCompleted: (data) => {
+            if (!data?.discountCode?.code) {
+                setDiscountError('Discount code does not exist')
+            } else {
+                setDiscountError('')
+                dispatch(toggleDiscountCode(data.discountCode))
+            }
+        }
+    })
 
     const [discountCode, setDiscountCode] = useState('')
     const [discountError, setDiscountError] = useState('')
 
-    if (!user.loggedIn) {
-        return <Navigate to="/" replace />
-    }
+    useEffect(() => {
+        if (!user.loggedIn) {
+            navigate('/')
+        }
+    })
 
-    const handleDeliveryStep = () => {
+    const handleDeliveryStep = useCallback(() => {
         navigate('/payment')
-    }
+    }, [navigate])
 
-    const removeDiscountCode = () => {
+    const removeDiscountCode = useCallback(() => {
         setDiscountCode('')
         dispatch(toggleDiscountCode(false))
-    }
+    }, [dispatch])
 
-    const handleDiscountCode = async (e) => {
+    const handleDiscountCode = (e) => {
         e.preventDefault()
-        await checkDiscountCode({
-            variables: { code: discountCode }
-        })
-            .then((res) => {
-                if (!res) throw new Error('Request Failed')
-
-                return res.data.discountCode
-            })
-            .then((data) => {
-                if (!data.code) {
-                    console.log('err')
-                    setDiscountError('Discount code does not exist')
-                } else {
-                    setDiscountError('')
-                    dispatch(toggleDiscountCode(data))
-                }
-            })
-            .catch((error) => {
-                setDiscountError(error.message)
-            })
+        checkDiscountCode({ variables: { code: discountCode } })
     }
 
     const activateButton = (e) => {
@@ -160,7 +141,7 @@ const Delivery = () => {
                     </p>
                 )}
                 <hr className="my-4" />
-                {cart.items.map((item: CartItem) => (
+                {cart.items.map((item) => (
                     <CheckoutItem key={`checkout_` + item.id} item={item} />
                 ))}
             </div>

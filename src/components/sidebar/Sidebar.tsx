@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { selectCart } from '../../reducers/cartSlice'
 import { useAppSelector } from '../../app/hooks'
@@ -16,13 +17,13 @@ const Sidebar = ({ showEditButton, showButton, buttonTitle, onClick }: Sidebar) 
     const navigate = useNavigate()
     const cart = useAppSelector(selectCart)
 
-    const handleEditStep = () => {
+    const handleEditStep = useCallback(() => {
         navigate('/')
-    }
+    }, [navigate])
 
     return (
         <div className="w-full rounded-lg p-6 shadow-lg">
-            <div className="content prose-sm prose">
+            <div className="content prose-sm">
                 <div className="flex flex-row justify-between">
                     <span className="font-bold uppercase tracking-wide text-gray-600">
                         Your Basket

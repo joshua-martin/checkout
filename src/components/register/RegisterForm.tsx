@@ -3,13 +3,14 @@ import { useDispatch } from 'react-redux'
 import { increment } from '../../reducers/stepperSlice'
 import { login } from '../../reducers/userSlice'
 
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
+import { graphql } from '../../gql'
 
 import Validate from '../utils/Validate'
 import Input from '../ui/Input'
 import Button from '../ui/Button'
 
-const REGISTER_USER = gql`
+const REGISTER_USER = graphql(`
     mutation Register(
         $email: String!
         $name: String
@@ -39,11 +40,23 @@ const REGISTER_USER = gql`
             }
         }
     }
-`
+`)
 
 const RegisterForm = () => {
     const dispatch = useDispatch()
-    const [registerUser, { loading, error }] = useMutation(REGISTER_USER)
+    const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+        onError: (error) => {
+            setGlobalError(error.message)
+        },
+        onCompleted: (data) => {
+            if (!data.register.success) {
+                setGlobalError(data.register.message)
+            } else {
+                dispatch(login(data.register.user))
+                dispatch(increment())
+            }
+        }
+    })
 
     const [email, setEmail] = useState('')
     const [emailError, setEmailError] = useState('')
@@ -58,7 +71,6 @@ const RegisterForm = () => {
     const [postcode, setPostcode] = useState('')
     const [postcodeError, setPostcodeError] = useState('')
 
-    const [fetching, setFetching] = useState(false)
     const [globalError, setGlobalError] = useState('')
 
     const handleEmail = (e) => {
@@ -117,27 +129,9 @@ const RegisterForm = () => {
         if (!town) setTownError('This field is required')
         if (!postcode) setPostcodeError('This field is required')
         else {
-            setFetching(true)
-            await registerUser({
+            registerUser({
                 variables: { email, name, phone, addressLine, town, postcode }
             })
-                .then((res) => {
-                    if (!res) throw new Error('Request Failed')
-
-                    return res.data.register
-                })
-                .then((data) => {
-                    if (!data.success) {
-                        setGlobalError(data.message)
-                    } else {
-                        dispatch(login(data.user))
-                        dispatch(increment())
-                    }
-                })
-                .catch((error) => {
-                    setFetching(false)
-                    setGlobalError(error.message)
-                })
         }
     }
 
@@ -145,14 +139,6 @@ const RegisterForm = () => {
         return (
             <div className="mb-2 rounded-lg border-2 border-blue-400 px-4 py-2 font-bold text-blue-400">
                 Please wait...
-            </div>
-        )
-    }
-
-    if (error) {
-        return (
-            <div className="mb-2 rounded-lg border-2 border-red-400 px-4 py-2 font-bold text-red-400">
-                {error.message}
             </div>
         )
     }
@@ -225,9 +211,9 @@ const RegisterForm = () => {
             />
 
             <Button
-                title={fetching ? 'Loading...' : 'Register'}
+                title={loading ? 'Loading...' : 'Register'}
                 onClick={handleRegister}
-                disabled={fetching}
+                disabled={loading}
                 classOverrides="mt-4 py-3"
             />
         </form>

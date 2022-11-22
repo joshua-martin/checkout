@@ -1,11 +1,15 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { addItem } from '../../reducers/cartSlice'
+import { addItem, CartItem } from '../../reducers/cartSlice'
 
 import Input from '../ui/Input'
 import Button from '../ui/Button'
 
-const PurchaseElement = ({ item }) => {
+type Props = {
+    item: CartItem
+}
+
+const PurchaseElement = ({ item }: Props) => {
     const dispatch = useDispatch()
     const [quantity, setQuantity] = useState(1)
 
@@ -14,14 +18,14 @@ const PurchaseElement = ({ item }) => {
         currency: 'GBP'
     })
 
-    const handleQuantity = (e) => {
+    const handleQuantity = useCallback((e) => {
         const { value } = e.target
         setQuantity(parseInt(value))
-    }
+    }, [])
 
-    const handleAddToCart = () => {
+    const handleAddToCart = useCallback(() => {
         dispatch(addItem({ item: item, quantity: quantity }))
-    }
+    }, [dispatch, item, quantity])
 
     return (
         <article className="w-full rounded-lg border p-4">

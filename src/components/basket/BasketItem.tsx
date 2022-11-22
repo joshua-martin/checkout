@@ -1,39 +1,42 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { toggleQuantity } from '../../reducers/cartSlice'
+import { CartItem, toggleQuantity } from '../../reducers/cartSlice'
 
 import './BasketItem.css'
 
-const BasketItem = ({ item }) => {
+type Props = {
+    item: CartItem
+}
+
+const BasketItem = ({ item }: Props) => {
+    const dispatch = useDispatch()
+    const [quantity, setQuantity] = useState(item.quantity)
+
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'GBP'
     })
 
-    const dispatch = useDispatch()
-
-    const [quantity, setQuantity] = useState(item.quantity)
-
-    const adjustQuantity = (e) => {
+    const adjustQuantity = useCallback((e) => {
         const { value } = e.target
         setQuantity(parseInt(value))
-    }
+    }, [])
 
-    const manuallyAdjustQuantity = () => {
+    const manuallyAdjustQuantity = useCallback(() => {
         dispatch(toggleQuantity({ item: item, quantity: quantity }))
-    }
+    }, [dispatch, item, quantity])
 
-    const decrementQuantity = () => {
+    const decrementQuantity = useCallback(() => {
         const newQty = quantity - 1
         setQuantity(newQty)
         dispatch(toggleQuantity({ item: item, quantity: newQty }))
-    }
+    }, [dispatch, item, quantity])
 
-    const incrementQuantity = () => {
+    const incrementQuantity = useCallback(() => {
         const newQty = quantity + 1
         setQuantity(newQty)
         dispatch(toggleQuantity({ item: item, quantity: newQty }))
-    }
+    }, [dispatch, item, quantity])
 
     return (
         <div className="mb-2 rounded-lg border p-4">

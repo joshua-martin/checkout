@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { RootState } from '../app/store'
 
 export interface DiscountItem {
-    amount?: number
-    code?: string
+    amount: number
+    code: string
 }
 export interface DeliveryItem {
     id: number
@@ -17,7 +17,7 @@ export interface CartItem {
     seller: string
     price: number
     image: string
-    quantity: number
+    quantity?: number
     delivery: DeliveryItem[]
 }
 export interface CartState {
@@ -26,7 +26,7 @@ export interface CartState {
     subtotal: number
     delivery: number
     total: number
-    discount: DiscountItem
+    discount: DiscountItem | Record<string, never>
 }
 const initialState: CartState = {
     items: [],

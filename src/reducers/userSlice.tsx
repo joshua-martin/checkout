@@ -2,19 +2,19 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { RootState } from '../app/store'
 
 interface UserProfile {
-    id?: number
-    email?: string
-    password?: string
-    name?: string
-    phone?: string
-    addressLine?: string
-    town?: string
-    postcode?: string
+    id: number
+    email: string
+    password: string
+    name: string
+    phone: string
+    addressLine: string
+    town: string
+    postcode: string
 }
 
 interface User {
     loggedIn: boolean
-    user: UserProfile
+    user: UserProfile | Record<string, never>
 }
 
 const initialState: User = {

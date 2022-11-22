@@ -1,7 +1,13 @@
+import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { toggleDelivery } from '../../reducers/cartSlice'
+import { DeliveryItem, toggleDelivery } from '../../reducers/cartSlice'
 
-const DeliveryBlock = ({ item, delivery }) => {
+type Props = {
+    item: DeliveryItem['id']
+    delivery: DeliveryItem
+}
+
+const DeliveryBlock = ({ item, delivery }: Props) => {
     const dispatch = useDispatch()
 
     const formatter = new Intl.NumberFormat('en-US', {
@@ -9,9 +15,9 @@ const DeliveryBlock = ({ item, delivery }) => {
         currency: 'GBP'
     })
 
-    const changeDeliveryOption = () => {
+    const changeDeliveryOption = useCallback(() => {
         dispatch(toggleDelivery({ item: item, deliveryOption: delivery }))
-    }
+    }, [dispatch, item, delivery])
 
     return (
         <label

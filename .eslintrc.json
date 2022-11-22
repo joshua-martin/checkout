@@ -20,7 +20,7 @@
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
-    "plugins": ["react", "@typescript-eslint"],
+    "plugins": ["react", "@typescript-eslint", "react-hooks"],
     "ignorePatterns": [
         "babel-plugin-macros.config.js",
         "babel.config.js",
@@ -28,7 +28,8 @@
         "tailwind.config.js",
         "server/*.js",
         "*.test.js",
-        "custom.d.ts"
+        "custom.d.ts",
+        "src/gql/**"
     ],
 
     "rules": {
@@ -40,6 +41,8 @@
                 "endOfLine": "auto"
             }
         ],
-        "@typescript-eslint/no-explicit-any": 0
+        "@typescript-eslint/no-explicit-any": 0,
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn"
     }
 }

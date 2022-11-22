@@ -18,7 +18,7 @@ const Input = ({ onChange, error, name, label, showLabel, classOverrides, type, 
             <label
                 htmlFor={name}
                 id={'label_' + name}
-                className={`mb-1 mt-2 block font-semibold ${!showLabel ? 'hidden' : ''}`}>
+                className={`mb-1 mt-2 block font-semibold ${showLabel === false ? 'hidden' : ''}`}>
                 {label}
             </label>
             <input

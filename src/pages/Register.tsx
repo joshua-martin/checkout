@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAppSelector } from '../app/hooks'
 import { selectUser } from '../reducers/userSlice'
@@ -8,9 +9,9 @@ const Register = () => {
     const navigate = useNavigate()
     const user = useAppSelector(selectUser)
 
-    const navigateToLogin = () => {
+    const navigateToLogin = useCallback(() => {
         navigate('/login')
-    }
+    }, [navigate])
 
     if (user.loggedIn) return <Navigate to="/delivery" replace />
 

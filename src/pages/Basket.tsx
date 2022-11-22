@@ -1,13 +1,14 @@
+import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
+import { graphql } from '../gql'
 
 import Sidebar from '../components/sidebar/Sidebar'
 import Error from '../components/ui/Error'
 import PurchaseElement from '../components/basket/PurchaseElement'
 import BasketItems from '../components/basket/BasketItems'
-import { CartItem } from '../reducers/cartSlice'
 
-const GET_ITEMS = gql`
+const GET_ITEMS = graphql(`
     query GetItems {
         items {
             id
@@ -23,18 +24,18 @@ const GET_ITEMS = gql`
             }
         }
     }
-`
+`)
 
 const Basket = () => {
     const navigate = useNavigate()
     const { loading, error, data } = useQuery(GET_ITEMS)
 
+    const handleBasketStep = useCallback(() => {
+        navigate('/login')
+    }, [navigate])
+
     if (loading) return null
     if (error) return <Error err={error} />
-
-    const handleBasketStep = () => {
-        navigate('/login')
-    }
 
     return (
         <div className="container mx-auto my-8 flex max-w-5xl flex-row flex-wrap items-start lg:flex-nowrap lg:space-x-6">
@@ -45,11 +46,9 @@ const Basket = () => {
 
                 <hr className="my-4" />
                 <div className="grid gap-y-2 lg:grid-cols-3 lg:gap-x-2">
-                    {data.items.map((item: CartItem) =>
-                        (() => {
-                            return <PurchaseElement item={item} key={item.id} />
-                        })()
-                    )}
+                    {data.items.map((item) => (
+                        <PurchaseElement item={item} key={item.id} />
+                    ))}
                 </div>
             </div>
             <Sidebar showEditButton={false} onClick={handleBasketStep} buttonTitle="Checkout" />

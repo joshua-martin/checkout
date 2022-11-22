@@ -1,4 +1,10 @@
-const CompleteItem = ({ item }) => {
+import { CartItem } from '../../reducers/cartSlice'
+
+type Props = {
+    item: CartItem
+}
+
+const CompleteItem = ({ item }: Props) => {
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'GBP'

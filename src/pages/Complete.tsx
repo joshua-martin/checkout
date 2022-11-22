@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { selectUser } from '../reducers/userSlice'
 import { CartItem, selectCart } from '../reducers/cartSlice'
@@ -11,9 +12,13 @@ const Payment = () => {
     const user = useAppSelector(selectUser)
     const cart = useAppSelector(selectCart)
 
-    if (!user.loggedIn) {
-        navigate('/')
-    }
+    const { items } = cart
+
+    useEffect(() => {
+        if (!user.loggedIn) {
+            navigate('/')
+        }
+    })
 
     return (
         <div className="container mx-auto my-8 flex max-w-5xl flex-row flex-wrap items-start lg:flex-nowrap lg:space-x-6">
@@ -22,7 +27,7 @@ const Payment = () => {
                 <h2 className="text-xl font-semibold">Deliver to</h2>
                 <AddressBlock user={user.user} />
                 <hr className="my-4" />
-                {cart.items.map((item: CartItem) => (
+                {items.map((item: CartItem) => (
                     <CompleteItem key={`complete_` + item.id} item={item} />
                 ))}
                 <SidebarValues cart={cart} />

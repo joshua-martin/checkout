@@ -1,3 +1,4 @@
+import { useCallback, useEffect } from 'react'
 import { useAppSelector, useAppDispatch } from '../app/hooks'
 import { useNavigate } from 'react-router-dom'
 import { selectUser } from '../reducers/userSlice'
@@ -19,14 +20,16 @@ const Payment = () => {
         currency: 'GBP'
     })
 
-    if (!user.loggedIn) {
-        navigate('/')
-    }
+    useEffect(() => {
+        if (user.loggedIn) {
+            navigate('/')
+        }
+    })
 
-    const handlePaymentStep = () => {
+    const handlePaymentStep = useCallback(() => {
         dispatch(increment())
         navigate('/complete')
-    }
+    }, [dispatch, navigate])
 
     return (
         <div className="container mx-auto my-8 flex max-w-5xl flex-row flex-wrap items-start lg:flex-nowrap lg:space-x-6">
