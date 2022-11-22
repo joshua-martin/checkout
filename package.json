@@ -24,7 +24,9 @@
         "lint": "eslint .",
         "lint:fix": "eslint --fix",
         "format": "prettier --write \"./**/*.{js,jsx,ts,tsx,css,md,json}\"",
-        "generate": "graphql-codegen"
+        "generate": "graphql-codegen",
+        "prestart": "graphql-codegen",
+        "prebuild": "graphql-codegen"
     },
     "eslintConfig": {
         "extends": [
